@@ -1,0 +1,2758 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abordagem das Anemias — Apresentação Completa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    /* Variáveis do Tema Escuro (Padrão) */
+    :root, [data-theme="dark"] {
+      --bg-dark: #0b0f19;
+      --bg-topbar: rgba(11, 15, 25, 0.85);
+      --bg-card: rgba(22, 30, 49, 0.82);
+      --bg-card-subtle: rgba(255, 255, 255, 0.03);
+      --bg-drawer: #111827;
+      --bg-formula: rgba(15, 23, 42, 0.92);
+      --text-main: #f8fafc;
+      --text-body: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border-glass: rgba(255, 255, 255, 0.11);
+      --table-header: rgba(255, 255, 255, 0.06);
+      --table-hover: rgba(255, 255, 255, 0.03);
+      --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.3);
+      --ambient-grad: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #0b1120 100%);
+      --formula-text: #38bdf8;
+    }
+
+    /* Variáveis do Tema Claro */
+    [data-theme="light"] {
+      --bg-dark: #f1f5f9;
+      --bg-topbar: rgba(255, 255, 255, 0.90);
+      --bg-card: rgba(255, 255, 255, 0.94);
+      --bg-card-subtle: rgba(15, 23, 42, 0.04);
+      --bg-drawer: #ffffff;
+      --bg-formula: #f8fafc;
+      --text-main: #0f172a;
+      --text-body: #334155;
+      --text-muted: #64748b;
+      --border-glass: rgba(15, 23, 42, 0.12);
+      --table-header: rgba(15, 23, 42, 0.06);
+      --table-hover: rgba(15, 23, 42, 0.03);
+      --shadow-card: 0 6px 20px rgba(15, 23, 42, 0.07);
+      --ambient-grad: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+      --formula-text: #0284c7;
+    }
+
+    /* Cores por Módulo */
+    :root {
+      --mod1-primary: #ef4444;
+      --mod1-secondary: #f97316;
+      --mod1-glow: rgba(239, 68, 68, 0.22);
+
+      --mod2-primary: #8b5cf6;
+      --mod2-secondary: #ec4899;
+      --mod2-glow: rgba(139, 92, 246, 0.22);
+
+      --mod3-primary: #06b6d4;
+      --mod3-secondary: #3b82f6;
+      --mod3-glow: rgba(6, 182, 212, 0.22);
+
+      --mod4-primary: #10b981;
+      --mod4-secondary: #14b8a6;
+      --mod4-glow: rgba(16, 185, 129, 0.22);
+
+      --mod5-primary: #f59e0b;
+      --mod5-secondary: #ef4444;
+      --mod5-glow: rgba(245, 158, 11, 0.22);
+
+      --active-primary: var(--mod1-primary);
+      --active-secondary: var(--mod1-secondary);
+      --active-glow: var(--mod1-glow);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      transition: background-color 0.35s ease, color 0.35s ease;
+    }
+
+    /* Fundo Dinâmico com Brilho por Módulo */
+    .ambient-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: 
+        radial-gradient(circle at 12% 18%, var(--active-glow), transparent 40%),
+        radial-gradient(circle at 88% 82%, rgba(59, 130, 246, 0.10), transparent 45%),
+        var(--ambient-grad);
+      transition: background 0.5s ease;
+    }
+
+    /* Top Navigation Bar */
+    header.topbar {
+      position: relative;
+      z-index: 20;
+      height: 60px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-glass);
+      background: var(--bg-topbar);
+      backdrop-filter: blur(12px);
+      transition: background 0.35s ease;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+    }
+
+    .brand-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--active-primary), var(--active-secondary));
+      box-shadow: 0 0 12px var(--active-primary);
+      transition: all 0.4s ease;
+    }
+
+    .module-pills {
+      display: flex;
+      gap: 6px;
+    }
+
+    .mod-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-glass);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .mod-pill:hover {
+      color: var(--text-main);
+    }
+
+    .mod-pill.active {
+      color: #fff;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--active-primary), var(--active-secondary));
+      box-shadow: 0 4px 14px var(--active-glow);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-icon {
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-glass);
+      color: var(--text-main);
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-icon:hover {
+      border-color: var(--active-primary);
+      transform: translateY(-1px);
+    }
+
+    /* Área Principal de Slides */
+    main.deck-container {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 26px 46px 34px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(15px) scale(0.99);
+      transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    .slide::-webkit-scrollbar {
+      width: 6px;
+    }
+    .slide::-webkit-scrollbar-thumb {
+      background: var(--text-muted);
+      border-radius: 4px;
+    }
+
+    /* Cabeçalho do Slide */
+    .slide-header {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      border-left: 4px solid var(--active-primary);
+      padding-left: 16px;
+      flex-shrink: 0;
+    }
+
+    .slide-tag {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      color: var(--active-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .slide-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 800;
+      line-height: 1.2;
+      color: var(--text-main);
+    }
+
+    .slide-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      text-align: justify;
+    }
+
+    /* Layouts Utilitários */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+
+    /* Cards & Textos Justificados */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 14px;
+      padding: 16px 20px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: var(--shadow-card);
+      transition: background 0.35s ease, border-color 0.35s ease;
+    }
+
+    .card-accent { border-top: 3px solid var(--active-primary); }
+    .card-warn { border-left: 4px solid #f59e0b; background: rgba(245, 158, 11, 0.08); }
+    .card-danger { border-left: 4px solid #ef4444; background: rgba(239, 68, 68, 0.08); }
+    .card-success { border-left: 4px solid #10b981; background: rgba(16, 185, 129, 0.08); }
+    .card-info { border-left: 4px solid #06b6d4; background: rgba(6, 182, 212, 0.08); }
+
+    .card h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-align: left;
+    }
+
+    /* Justificação Global de Textos de Conteúdo */
+    .card p, .card li, td, .check-item span {
+      font-size: 0.86rem;
+      line-height: 1.55;
+      color: var(--text-body);
+      text-align: justify;
+      hyphens: auto;
+    }
+
+    .card ul, .card ol {
+      padding-left: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .card li strong, td strong, .card p strong {
+      color: var(--text-main);
+    }
+
+    /* Badges & Pills */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-align: left;
+    }
+    .b-red { background: rgba(239, 68, 68, 0.18); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.35); }
+    .b-orange { background: rgba(249, 115, 22, 0.18); color: #f97316; border: 1px solid rgba(249, 115, 22, 0.35); }
+    .b-amber { background: rgba(245, 158, 11, 0.18); color: #d97706; border: 1px solid rgba(245, 158, 11, 0.35); }
+    .b-green { background: rgba(16, 185, 129, 0.18); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.35); }
+    .b-cyan { background: rgba(6, 182, 212, 0.18); color: #0891b2; border: 1px solid rgba(6, 182, 212, 0.35); }
+    .b-purple { background: rgba(139, 92, 246, 0.18); color: #8b5cf6; border: 1px solid rgba(139, 92, 246, 0.35); }
+    .b-pink { background: rgba(236, 72, 153, 0.18); color: #ec4899; border: 1px solid rgba(236, 72, 153, 0.35); }
+
+    [data-theme="dark"] .b-red { color: #fca5a5; }
+    [data-theme="dark"] .b-orange { color: #fdba74; }
+    [data-theme="dark"] .b-amber { color: #fde68a; }
+    [data-theme="dark"] .b-green { color: #6ee7b7; }
+    [data-theme="dark"] .b-cyan { color: #67e8f9; }
+    [data-theme="dark"] .b-purple { color: #c4b5fd; }
+    [data-theme="dark"] .b-pink { color: #f9a8d4; }
+
+    /* Tabelas Estilizadas */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border-glass);
+      background: var(--bg-card);
+      box-shadow: var(--shadow-card);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.81rem;
+    }
+
+    th {
+      background: var(--table-header);
+      color: var(--text-main);
+      font-weight: 700;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-glass);
+      white-space: nowrap;
+      text-align: left;
+    }
+
+    td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border-glass);
+      vertical-align: top;
+    }
+
+    /* Primeira coluna das tabelas alinhada à esquerda para evitar buracos em títulos curtos */
+    td:first-child {
+      text-align: left;
+      hyphens: none;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--table-hover); }
+
+    /* Caixas de Fórmula */
+    .formula-box {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg-formula);
+      border: 1px solid var(--active-primary);
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: var(--formula-text);
+      font-size: 0.83rem;
+      text-align: center !important;
+      font-weight: 600;
+    }
+
+    /* Galeria de Mídia Clínica (Imagens e Vídeo) */
+    .media-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-card);
+    }
+
+    .media-frame {
+      position: relative;
+      width: 100%;
+      height: 185px;
+      background: rgba(15, 23, 42, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border-glass);
+    }
+
+    [data-theme="light"] .media-frame {
+      background: #e2e8f0;
+    }
+
+    .media-frame img, .media-frame video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: zoom-in;
+      transition: transform 0.3s ease;
+    }
+
+    .media-frame video {
+      cursor: pointer;
+    }
+
+    .media-frame img:hover {
+      transform: scale(1.04);
+    }
+
+    .media-placeholder {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      text-align: center !important;
+      gap: 6px;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+    }
+
+    .media-placeholder code {
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--active-primary);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.76rem;
+    }
+
+    .media-body {
+      padding: 12px 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .media-file-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      background: var(--bg-card-subtle);
+      padding: 2px 7px;
+      border-radius: 4px;
+      border: 1px solid var(--border-glass);
+      width: fit-content;
+    }
+
+    /* Modal Lightbox para Ampliar Imagens */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(6px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 14px;
+      padding: 30px;
+      cursor: zoom-out;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 80vh;
+      border-radius: 12px;
+      border: 2px solid var(--active-primary);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    }
+    .lightbox-caption {
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    /* Fluxogramas Visuais */
+    .flow-tree {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+    }
+
+    .flow-node {
+      background: var(--bg-card);
+      border: 1.5px solid var(--active-primary);
+      padding: 10px 18px;
+      border-radius: 10px;
+      text-align: center !important;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--text-main);
+      box-shadow: var(--shadow-card);
+    }
+
+    .flow-arrow {
+      color: var(--active-primary);
+      font-size: 1.1rem;
+      font-weight: bold;
+      line-height: 1;
+    }
+
+    /* Hero / Capa */
+    .hero-slide {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .hero-badge {
+      padding: 8px 18px;
+      border-radius: 999px;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: var(--active-primary);
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .hero-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 3.1rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--text-main) 0%, #ef4444 55%, #f97316 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.15;
+      max-width: 900px;
+    }
+
+    /* Rodapé e Barra de Progresso */
+    footer.bottombar {
+      position: relative;
+      z-index: 20;
+      height: 52px;
+      background: var(--bg-topbar);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border-glass);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+    }
+
+    .progress-track {
+      position: absolute;
+      top: -3px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--border-glass);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--active-primary), var(--active-secondary));
+      width: 0%;
+      transition: width 0.3s ease, background 0.4s ease;
+    }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .slide-counter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      min-width: 70px;
+      text-align: center;
+    }
+
+    /* Drawer Sumário */
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 50;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s;
+    }
+    .drawer-backdrop.open { opacity: 1; visibility: visible; }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 360px;
+      background: var(--bg-drawer);
+      border-right: 1px solid var(--border-glass);
+      z-index: 60;
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+    }
+    .drawer.open { transform: translateX(0); }
+
+    .drawer-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border-glass);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .drawer-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .drawer-item {
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+    }
+    .drawer-item:hover { background: var(--bg-card-subtle); color: var(--text-main); }
+    .drawer-item.active {
+      background: var(--bg-card-subtle);
+      color: var(--text-main);
+      font-weight: 700;
+      border-left: 3px solid var(--active-primary);
+    }
+
+    /* Checklist Interativo */
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: var(--bg-card-subtle);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .check-item input {
+      margin-top: 4px;
+      accent-color: var(--active-primary);
+      transform: scale(1.15);
+    }
+
+    @media (max-width: 1024px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .module-pills { display: none; }
+      .slide { padding: 20px; }
+      .hero-title { font-size: 2.1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-bg"></div>
+
+  <!-- Lightbox Modal para Imagens Clínicas -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" alt="Imagem clínica ampliada">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <!-- Top Navigation -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <span>ABORDAGEM DAS ANEMIAS</span>
+    </div>
+
+    <div class="module-pills">
+      <button class="mod-pill active" onclick="jumpToModule(1)">M1 · Fundamentos</button>
+      <button class="mod-pill" onclick="jumpToModule(2)">M2 · Classificação</button>
+      <button class="mod-pill" onclick="jumpToModule(3)">M3 · Investigação</button>
+      <button class="mod-pill" onclick="jumpToModule(4)">M4 · Tratamento</button>
+      <button class="mod-pill" onclick="jumpToModule(5)">M5 · Especializadas</button>
+    </div>
+
+    <div class="top-actions">
+      <button class="btn-icon" id="themeBtn" onclick="toggleTheme()" title="Alternar Modo Claro / Escuro (Tecla T)">☀️ Modo Claro</button>
+      <button class="btn-icon" onclick="toggleDrawer()">☰ Sumário</button>
+      <button class="btn-icon" onclick="toggleFullScreen()">⛶ Tela Cheia</button>
+    </div>
+  </header>
+
+  <!-- Sumário Lateral -->
+  <div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleDrawer()"></div>
+  <aside class="drawer" id="drawer">
+    <div class="drawer-header">
+      <span>Índice de Slides (27)</span>
+      <button class="btn-icon" onclick="toggleDrawer()">✕</button>
+    </div>
+    <div class="drawer-list" id="drawerList"></div>
+  </aside>
+
+  <!-- Deck de Slides -->
+  <main class="deck-container" id="deck">
+
+    <!-- SLIDE 1: CAPA -->
+    <section class="slide hero-slide active" data-module="1" data-title="Capa: Abordagem das Anemias">
+      <span class="hero-badge">Guia Clínico, Semiológico & Laboratorial</span>
+      <h1 class="hero-title">ABORDAGEM DAS ANEMIAS</h1>
+      <p style="max-width: 720px; color: var(--text-muted); font-size: 1.02rem; line-height: 1.6; text-align: center;">
+        Da fisiopatologia, semiologia ilustrada e leitura avançada do hemograma ao diagnóstico diferencial, manejo terapêutico atualizado (OMS 2024 / SBP 2026) e critérios de encaminhamento hematológico.
+      </p>
+      <div class="grid-3" style="max-width: 1000px; width: 100%; margin-top: 14px;">
+        <div class="card card-accent" style="--active-primary: #ef4444;">
+          <span class="badge b-red" style="width: fit-content;">Módulo 1</span>
+          <h3>Fundamentos e Semiologia</h3>
+          <p>Anemia verdadeira vs. relativa, cortes de Hb, adaptação pelo 2,3-DPG, atlas semiológico (imagens e vídeo), índices eritrocitários, IPR e hematoscopia.</p>
+        </div>
+        <div class="card card-accent" style="--active-primary: #8b5cf6;">
+          <span class="badge b-purple" style="width: fit-content;">Módulo 2</span>
+          <h3>Classificação Morfológica e Cinética</h3>
+          <p>Matriz diagnóstica VCM × RDW, armadilhas do VCM, anemias hipoproliferativas vs. hiperproliferativas e eixos de hemólise.</p>
+        </div>
+        <div class="card card-accent" style="--active-primary: #06b6d4;">
+          <span class="badge b-cyan" style="width: fit-content;">Módulo 3</span>
+          <h3>Investigação Direcionada</h3>
+          <p>Cinética do ferro, cuidado com HbA2, indicação de EDA/colonoscopia, algoritmo normocítico (TAD) e macrocítico (MMA/Homocisteína).</p>
+        </div>
+      </div>
+      <div class="grid-2" style="max-width: 670px; width: 100%;">
+        <div class="card card-accent" style="--active-primary: #10b981;">
+          <span class="badge b-green" style="width: fit-content;">Módulo 4</span>
+          <h3>Tratamento na Prática Clínica</h3>
+          <p>Ferro oral/IV (Ganzoni), diretrizes SBP 2026, B12/Folato, Doença Crônica/DRC, Gestantes e Regra dos 3 Terços no Idoso.</p>
+        </div>
+        <div class="card card-accent" style="--active-primary: #f59e0b;">
+          <span class="badge b-amber" style="width: fit-content;">Módulo 5</span>
+          <h3>Anemias Especializadas e Fluxo</h3>
+          <p>Talassemias (α e β), Doença Falciforme e emergências, resumo de AHAI/PTT/HPN/Aplasia e checklist de encaminhamento.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: DEFINIÇÃO E FISIOPATOLOGIA -->
+    <section class="slide" data-module="1" data-title="1.1 Definição, Volemia e Adaptação Fisiológica">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 1 · Fundamentos, Semiologia e Hemograma</span>
+        <h2 class="slide-title">Anemia Verdadeira vs. Relativa e Mecanismos Compensatórios</h2>
+        <p class="slide-subtitle">Redução da massa eritrocitária total vs. alterações da volemia plasmática e respostas adaptativas à hipóxia.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card card-danger">
+          <h3>🩸 Anemia Verdadeira</h3>
+          <p>Ocorre quando existe uma redução real da massa e do volume total de eritrócitos circulantes no organismo, diminuindo a capacidade de transporte arterial de oxigênio pelo sangue:</p>
+          <ul>
+            <li>Defeito de produção medular (hipoproliferação)</li>
+            <li>Aumento da taxa de destruição (hemólise)</li>
+            <li>Perda sanguínea hemorrágica aguda ou crônica</li>
+          </ul>
+        </div>
+
+        <div class="card card-info">
+          <h3>💧 Anemia Relativa (Hemodiluição)</h3>
+          <p>Ocorre por expansão desproporcional do volume plasmático sem redução correspondente da massa eritrocitária total:</p>
+          <ul>
+            <li><strong>Gestação normal:</strong> volume plasmático expande entre 40% e 50%, superando o aumento fisiológico de 15% a 25% da massa de hemácias a partir da 7ª semana.</li>
+            <li><strong>Hiper-hidratação:</strong> associada à ICC ou insuficiência renal.</li>
+            <li><strong>Cirrose hepática:</strong> expansão plasmática de 10% a 30%.</li>
+          </ul>
+        </div>
+
+        <div class="card card-warn">
+          <h3>🔥 Hemoconcentração (Efeito Inverso)</h3>
+          <p>Situações de contração de volume concentram as hemácias no leito vascular, elevando falsamente a concentração de Hb e o Ht e mascarando uma anemia subjacente:</p>
+          <ul>
+            <li><strong>Causas clássicas:</strong> Desidratação grave ou choque por extravasamento capilar (ex.: sepse, queimaduras ou arboviroses).</li>
+            <li>A anemia real torna-se evidente somente após a restauração volêmica.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card card-accent">
+        <h3>⚙️ Três Respostas Adaptativas Principais à Hipóxia Tecidual (Equação de Fick)</h3>
+        <div class="grid-3" style="margin-top: 6px;">
+          <div style="background: var(--bg-card-subtle); padding: 12px; border-radius: 10px; border: 1px solid var(--border-glass);">
+            <span class="badge b-red">1. Desvio da Curva de Oxi-Hb à Direita</span>
+            <p style="margin-top: 8px;">A curva de dissociação apresenta formato sigmoide. O deslocamento para a direita reduz a afinidade da hemoglobina pelo oxigênio, permitindo que o gás seja cedido mais prontamente aos tecidos periféricos sob pressões parciais locais de O₂.</p>
+          </div>
+          <div style="background: var(--bg-card-subtle); padding: 12px; border-radius: 10px; border: 1px solid var(--border-glass);">
+            <span class="badge b-orange">2. Aumento Intracelular de 2,3-DPG</span>
+            <p style="margin-top: 8px;">Sintetizado na via glicolítica de Embden-Meyerhof (derivação de Rapoport-Luebering), o 2,3-DPG liga-se seletivamente aos tetrâmeros de desoxi-hemoglobina, estabilizando a forma desoxigenada. Acidose (efeito Bohr), hipercapnia e hipertermia reforçam o desvio.</p>
+          </div>
+          <div style="background: var(--bg-card-subtle); padding: 12px; border-radius: 10px; border: 1px solid var(--border-glass);">
+            <span class="badge b-amber">3. Adaptação Cardiovascular</span>
+            <p style="margin-top: 8px;">Elevação da frequência cardíaca e do volume sistólico (aumento do débito cardíaco), aliada à menor viscosidade sanguínea. Vasoconstrição seletiva desvia o fluxo da pele e músculos para cérebro, miocárdio, fígado e rins. Risco de ICC de alto débito e sopros ejetivos funcionais.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: VALORES DE CORTE DE HEMOGLOBINA -->
+    <section class="slide" data-module="1" data-title="1.2 Valores de Corte de Hemoglobina e Gravidade">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 1 · Critérios OMS 2024 / SBP 2026 / Duncan / Nathan & Oski</span>
+        <h2 class="slide-title">Valores de Corte de Hemoglobina (g/dL) e Estratificação de Gravidade</h2>
+        <p class="slide-subtitle">Baseados na concentração de hemoglobina situada 2 desvios-padrão (-2 DP) abaixo da média em indivíduos saudáveis ao nível do mar.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>População / Faixa Etária</th>
+              <th>Hb Média (-2 DP / Corte)</th>
+              <th>Anemia Leve (g/dL)</th>
+              <th>Anemia Moderada (g/dL)</th>
+              <th>Anemia Grave (g/dL)</th>
+              <th>Fonte / Diretriz</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Recém-nascido a termo (RNT)</strong></td>
+              <td>18,0 <span class="badge b-red">(Corte: 15,0)</span></td>
+              <td>—</td><td>—</td><td>—</td>
+              <td>SBP 2026 / Nathan & Oski</td>
+            </tr>
+            <tr>
+              <td><strong>1 semana / 2 semanas de vida</strong></td>
+              <td>1sem: 17,0 (13,5) | 2sem: 16,0 (12,5)</td>
+              <td>—</td><td>—</td><td>—</td>
+              <td>SBP 2026 / Nathan & Oski</td>
+            </tr>
+            <tr>
+              <td><strong>1 mês / 2 meses / 3 a 6 meses</strong></td>
+              <td>1m: 14,0 (10,0) | 2m: 11,5 (9,0) | 3-6m: 11,5 (9,5)</td>
+              <td>—</td><td>—</td><td>—</td>
+              <td>SBP 2026 / Nathan & Oski</td>
+            </tr>
+            <tr>
+              <td><strong>Crianças de 6 a 23 meses</strong></td>
+              <td><span class="badge b-orange">&lt; 10,5</span></td>
+              <td>—</td><td>—</td><td>—</td>
+              <td>Atualização OMS 2024 / SBP 2026</td>
+            </tr>
+            <tr>
+              <td><strong>Crianças de 24 a 59 meses (2–4 anos)</strong></td>
+              <td><span class="badge b-red">&lt; 11,0</span></td>
+              <td>10,0 a 10,9</td>
+              <td>7,0 a 9,9</td>
+              <td>&lt; 7,0</td>
+              <td>OMS 2024 / SBP 2026 / Duncan</td>
+            </tr>
+            <tr>
+              <td><strong>Crianças de 6 a 59 meses (critério clássico)</strong></td>
+              <td>&lt; 11,0</td>
+              <td>10,0 a 10,9</td>
+              <td>7,0 a 9,9</td>
+              <td>&lt; 7,0</td>
+              <td>OMS Clássica / Duncan</td>
+            </tr>
+            <tr>
+              <td><strong>Crianças de 5 a 11 anos</strong></td>
+              <td><span class="badge b-red">&lt; 11,5</span></td>
+              <td>11,0 a 11,4</td>
+              <td>8,0 a 10,9</td>
+              <td>&lt; 8,0</td>
+              <td>OMS / Duncan / SBP 2026</td>
+            </tr>
+            <tr>
+              <td><strong>Crianças de 12 a 14 anos (meninas e meninos)</strong></td>
+              <td><span class="badge b-red">&lt; 12,0</span></td>
+              <td>11,0 a 11,9</td>
+              <td>8,0 a 10,9</td>
+              <td>&lt; 8,0</td>
+              <td>OMS / Duncan / SBP 2026</td>
+            </tr>
+            <tr>
+              <td><strong>Mulheres não grávidas (≥ 15 anos)</strong></td>
+              <td><span class="badge b-red">&lt; 12,0</span></td>
+              <td>11,0 a 11,9</td>
+              <td>8,0 a 10,9</td>
+              <td>&lt; 8,0</td>
+              <td>OMS / Duncan / SBP 2026</td>
+            </tr>
+            <tr>
+              <td><strong>Homens (≥ 15 anos)</strong></td>
+              <td><span class="badge b-red">&lt; 13,0</span></td>
+              <td>11,0 a 12,9</td>
+              <td>8,0 a 10,9</td>
+              <td>&lt; 8,0</td>
+              <td>OMS / Duncan / SBP 2026</td>
+            </tr>
+            <tr>
+              <td><strong>Gestantes — 1º e 3º Trimestres</strong></td>
+              <td><span class="badge b-purple">&lt; 11,0</span></td>
+              <td>10,0 a 10,9</td>
+              <td>7,0 a 9,9</td>
+              <td>&lt; 7,0</td>
+              <td>OMS 2024 / SBP 2026</td>
+            </tr>
+            <tr>
+              <td><strong>Gestantes — 2º Trimestre</strong></td>
+              <td><span class="badge b-purple">&lt; 10,5</span></td>
+              <td>—</td><td>—</td><td>—</td>
+              <td>OMS 2024 / SBP 2026</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: SEMIOLOGIA DAS ANEMIAS -->
+    <section class="slide" data-module="1" data-title="1.3 Semiologia: Apresentação Clínica e Correlação Etiológica">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 1 · Anamnese e Exame Físico Direcionados</span>
+        <h2 class="slide-title">Apresentação Aguda vs. Crônica e Achados Específicos</h2>
+        <p class="slide-subtitle">Como a velocidade de instalação e os sinais físicos guiam a suspeita etiológica imediata.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card card-danger">
+          <h3>⚡ Instalação Aguda</h3>
+          <p>Decorre de perdas hemorrágicas volumosas repentinas ou hemólise intravascular maciça. Predominam a hipovolemia aguda e a instabilidade hemodinâmica: hipotensão postural, taquicardia desproporcional, sudorese fria, tontura ao ortostatismo, síncope e choque hipovolêmico.</p>
+          <p><strong>Nota diagnóstica:</strong> Nas primeiras horas de sangramento agudo total, Hb e Ht mantêm-se falsamente normais pela perda proporcional de hemácias e plasma.</p>
+        </div>
+
+        <div class="card card-info">
+          <h3>⏳ Instalação Crônica</h3>
+          <p>Instala-se de maneira lenta e insidiosa (deficiência de ferro, B12/folato ou doenças inflamatórias crônicas). Com volemia mantida e ativação do 2,3-DPG, desenvolve-se grande tolerância fisiológica: jovens podem manter-se oligossintomáticos em repouso com Hb de 6 a 7 g/dL. Sintomas surgem aos esforços e são menos tolerados por idosos, coronariopatas e portadores de DPOC.</p>
+        </div>
+
+        <div class="card card-accent">
+          <h3>🩺 Sinais Gerais da Síndrome</h3>
+          <ul>
+            <li><strong>Sintomas gerais:</strong> fadiga, adinamia/astenia, letargia, irritabilidade, dificuldade de concentração, cefaleia, tonturas, lipotimia e dispneia aos esforços.</li>
+            <li><strong>Mucosa conjuntival pálida:</strong> indica habitualmente Hb &lt; 9 g/dL.</li>
+            <li><strong>Apagamento de pregas palmares:</strong> sob hiperextensão indica Hb &lt; 7–8 g/dL.</li>
+            <li><strong>Cardiovascular:</strong> taquicardia sinusal, pulso amplo/martelo-d'água, sopro sistólico funcional ejetivo (foco pulmonar/BEE) e edema maleolar.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Achado Semiológico</th>
+              <th>Descrição Clínica</th>
+              <th>Etiologia Suspeita</th>
+              <th>Mecanismo Fisiopatológico</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Pica / Pagofagia / Geofagia</strong></td>
+              <td>Perversão do apetite com compulsão por gelo, terra/barro ou amido cru.</td>
+              <td><span class="badge b-red">Deficiência de Ferro</span></td>
+              <td>Muito específica para carência tecidual de ferro; fisiopatologia central em núcleos da base cerebrais.</td>
+            </tr>
+            <tr>
+              <td><strong>Coiloníquia</strong></td>
+              <td>Unhas finas, quebradiças, com curvatura côncava ("unhas em colher").</td>
+              <td><span class="badge b-red">Ferropriva Crônica / Grave</span></td>
+              <td>Comprometimento trófico epitelial e ungueal decorrente de depleção grave de enzimas férricas.</td>
+            </tr>
+            <tr>
+              <td><strong>Síndrome das Pernas Inquietas</strong></td>
+              <td>Desconforto sensitivo em MMII com urgência motora irresistível para movimentar as pernas.</td>
+              <td><span class="badge b-red">Deficiência de Ferro</span></td>
+              <td>Depleção crônica das concentrações de ferro nas regiões nigroestriatal e núcleo rubro cerebrais.</td>
+            </tr>
+            <tr>
+              <td><strong>Glossite Atrófica</strong></td>
+              <td>Língua dolorosa, eritematosa, lisa e brilhante por apagamento das papilas linguais.</td>
+              <td><span class="badge b-purple">B12, Folato ou Ferro</span></td>
+              <td>Interrupção da síntese de DNA ou renovação celular mitótica nas mucosas de rápida proliferação.</td>
+            </tr>
+            <tr>
+              <td><strong>Parestesias e Perda Vibratória</strong></td>
+              <td>Parestesias em "luva e bota", perda vibratória/postural, ataxia sensitiva, Romberg+ e Lhermitte.</td>
+              <td><span class="badge b-purple">Deficiência de B12 / Perniciosa</span></td>
+              <td>Degeneração combinada subaguda da medula espinal (colunas posteriores e tratos corticoespinhais).</td>
+            </tr>
+            <tr>
+              <td><strong>Icterícia + Esplenomegalia + Colelitíase</strong></td>
+              <td>Escleras amareladas (BI ↑) com fezes normais; baço palpável em QSE; cálculos de bilirrubinato de cálcio em jovens.</td>
+              <td><span class="badge b-amber">Anemias Hemolíticas</span> e Megaloblástica grave</td>
+              <td>Catabolismo acelerado do heme, hiperplasia reticuloendotelial esplênica e hiperexcreção biliar crônica de pigmentos.</td>
+            </tr>
+            <tr>
+              <td><strong>Bossa Frontal (Fácies Talassêmica)</strong></td>
+              <td>Proeminência frontal e malar acentuada por alargamento dos ossos do crânio.</td>
+              <td><span class="badge b-cyan">Talassemia Maior/Intermédia</span></td>
+              <td>Expansão compensatória acentuada da medula óssea vermelha eritroide sobre a cortical óssea por eritropoese ineficaz.</td>
+            </tr>
+            <tr>
+              <td><strong>Petéquias e Equimoses</strong></td>
+              <td>Lesões purpúricas cutaneomucosas puntiformes ou em placas hemorrágicas espontâneas.</td>
+              <td><span class="badge b-pink">Insuficiência Medular / PTT / CIVD</span></td>
+              <td>Trombocitopenia concomitante grave associada à aplasia/leucemia ou consumo plaquetário periférico.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: NOVO SLIDE - ATLAS SEMIOLÓGICO MULTIMÍDIA -->
+    <section class="slide" data-module="1" data-title="1.4 Atlas Semiológico Ilustrado e Vídeo da Manobra Esplênica">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 1 · Galeria Clínica e Semiológica Interativa</span>
+        <h2 class="slide-title">Achados Clínicos Relevantes na Inspeção e Exame Físico</h2>
+        <p class="slide-subtitle">Clique em qualquer imagem para ampliar em tela cheia. Salve os arquivos na mesma pasta do HTML com os nomes indicados abaixo.</p>
+      </div>
+
+      <div class="grid-3">
+        <!-- 1. Coiloníquia -->
+        <div class="media-card">
+          <div class="media-frame">
+            <img src="coiloniquia.jpg" alt="Coiloníquia - Unhas em colher na Anemia Ferropriva" onclick="openLightbox(this.src, this.alt)" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="media-placeholder">
+              <span>📷 Salve a imagem na pasta como:</span>
+              <code>coiloniquia.jpg</code>
+            </div>
+          </div>
+          <div class="media-body">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="badge b-red">Anemia Ferropriva Grave</span>
+              <span class="media-file-tag">coiloniquia.jpg</span>
+            </div>
+            <h3>Coiloníquia ("Unhas em Colher")</h3>
+            <p>Unhas finas, quebradiças e com concavidade transversal e longitudinal por depleção crônica de enzimas férricas epiteliais.</p>
+          </div>
+        </div>
+
+        <!-- 2. Glossite Atrófica -->
+        <div class="media-card">
+          <div class="media-frame">
+            <img src="glossite_atrofica.jpg" alt="Glossite Atrófica - Língua despapilada e brilhante" onclick="openLightbox(this.src, this.alt)" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="media-placeholder">
+              <span>📷 Salve a imagem na pasta como:</span>
+              <code>glossite_atrofica.jpg</code>
+            </div>
+          </div>
+          <div class="media-body">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="badge b-purple">Cobalamina (B12) / Folato / Ferro</span>
+              <span class="media-file-tag">glossite_atrofica.jpg</span>
+            </div>
+            <h3>Glossite Atrófica (Glossite de Hunter)</h3>
+            <p>Língua dolorosa, eritematosa, lisa e brilhante devido à atrofia das papilas linguais por falha na renovação mitótica mucosa.</p>
+          </div>
+        </div>
+
+        <!-- 3. Icterícia -->
+        <div class="media-card">
+          <div class="media-frame">
+            <img src="ictericia.jpg" alt="Icterícia flavínica em esclera por hiperbilirrubinemia indireta" onclick="openLightbox(this.src, this.alt)" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="media-placeholder">
+              <span>📷 Salve a imagem na pasta como:</span>
+              <code>ictericia.jpg</code>
+            </div>
+          </div>
+          <div class="media-body">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="badge b-amber">Anemias Hemolíticas / Megaloblástica</span>
+              <span class="media-file-tag">ictericia.jpg</span>
+            </div>
+            <h3>Icterícia Escleral (Bilirrubina Indireta)</h3>
+            <p>Coloração amarelada de escleras e mucosas sem colúria e com fezes normocrômicas, refletindo catabolismo acelerado do anel heme.</p>
+          </div>
+        </div>
+
+        <!-- 4. Vídeo da Manobra de Esplenomegalia -->
+        <div class="media-card">
+          <div class="media-frame">
+            <video src="esplenomegalia_manobra.mp4" controls preload="metadata" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"></video>
+            <div class="media-placeholder">
+              <span>🎬 Salve o vídeo na pasta como:</span>
+              <code>esplenomegalia_manobra.mp4</code>
+            </div>
+          </div>
+          <div class="media-body">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="badge b-cyan">Vídeo · Semiologia Abdominal</span>
+              <span class="media-file-tag">esplenomegalia_manobra.mp4</span>
+            </div>
+            <h3>Pesquisa de Esplenomegalia (Manobra)</h3>
+            <p>Percussão do Espaço de Traube e palpação bimanual do QSE (decúbito dorsal e posição de Schuster) na hemólise extravascular crônica.</p>
+          </div>
+        </div>
+
+        <!-- 5. Petéquias -->
+        <div class="media-card">
+          <div class="media-frame">
+            <img src="petequias.jpg" alt="Petéquias cutaneomucosas puntiformes por trombocitopenia" onclick="openLightbox(this.src, this.alt)" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="media-placeholder">
+              <span>📷 Salve a imagem na pasta como:</span>
+              <code>petequias.jpg</code>
+            </div>
+          </div>
+          <div class="media-body">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="badge b-pink">Aplasia / Leucemia / PTT</span>
+              <span class="media-file-tag">petequias.jpg</span>
+            </div>
+            <h3>Petéquias Cutaneomucosas</h3>
+            <p>Lesões purpúricas puntiformes que não desaparecem à digitopressão, sinalizando plaquetopenia grave concomitante à anemia.</p>
+          </div>
+        </div>
+
+        <!-- 6. Equimoses -->
+        <div class="media-card">
+          <div class="media-frame">
+            <img src="equimoses.jpg" alt="Equimoses espontâneas em placas hemorrágicas" onclick="openLightbox(this.src, this.alt)" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="media-placeholder">
+              <span>📷 Salve a imagem na pasta como:</span>
+              <code>equimoses.jpg</code>
+            </div>
+          </div>
+          <div class="media-body">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="badge b-pink">Insuficiência Medular / CIVD</span>
+              <span class="media-file-tag">equimoses.jpg</span>
+            </div>
+            <h3>Equimoses Espontâneas</h3>
+            <p>Placas hemorrágicas subcutâneas associadas a falência medular global (pancitopenia) ou microangiopatias trombóticas com consumo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: INTERPRETAÇÃO DO HEMOGRAMA -->
+    <section class="slide" data-module="1" data-title="1.5 Índices Eritrocitários e Interferentes Pré-Analíticos">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 1 · Leitura Crítica do Hemograma</span>
+        <h2 class="slide-title">Índices Eritrocitários: Significado, Referências e Artefatos</h2>
+        <p class="slide-subtitle">Parâmetros diretos, calculados e os interferentes pré-analíticos que distorcem os contadores automatizados.</p>
+      </div>
+
+      <div class="grid-4">
+        <div class="card">
+          <h3>RBC (Hemácias)</h3>
+          <span class="badge b-red">M: 4,0–5,4 | H: 4,5–6,0 (×10⁶/µL)</span>
+          <p><strong>Clínica:</strong> Em traços talassêmicos, a contagem costuma estar normal ou desproporcionalmente aumentada (&gt; 5,0–5,5 milhões/µL) apesar da microcitose.</p>
+          <p><strong>Artefatos:</strong> Subestimada por crioaglutinação; superestimada por desidratação grave.</p>
+        </div>
+
+        <div class="card">
+          <h3>Hemoglobina (Hb)</h3>
+          <span class="badge b-red">M: 12,0–16,0 | H: 13,5–17,5 g/dL</span>
+          <p><strong>Clínica:</strong> Medida espectrofotométrica direta (cianometemoglobina). É o parâmetro primário para confirmação laboratorial de anemia.</p>
+          <p><strong>Artefatos (Falsa ↑ por turbidez):</strong> Hipertrigliceridemia (lipemia), hiperbilirrubinemia intensa, hiperleucocitose (&gt;50–100 mil/µL) e paraproteínas.</p>
+        </div>
+
+        <div class="card">
+          <h3>Hematócrito (Ht)</h3>
+          <span class="badge b-red">M: 36%–48% | H: 40%–52%</span>
+          <div class="formula-box" style="font-size:0.75rem; padding:6px;">Ht = (RBC × VCM) / 10</div>
+          <p><strong>Artefatos:</strong> Erros de centrifugação com plasma retido no método manual; alterações espúrias do VCM (crioaglutinação, hiperglicemia) repercutem diretamente no Ht calculado.</p>
+        </div>
+
+        <div class="card">
+          <h3>VCM (Volume Médio)</h3>
+          <span class="badge b-orange">Adulto: 80–100 fL</span>
+          <div class="formula-box" style="font-size:0.75rem; padding:6px;">VCM = (Ht ÷ RBC) × 10</div>
+          <p><strong>Pediatria:</strong> RNT 98–108 fL; lactentes de 6–24m têm limite inferior normal de 70 fL.</p>
+          <p><strong>Falsa ↑:</strong> Crioaglutininas, rouleaux, reticulocitose intensa, hiperglicemia.<br><strong>Falsa ↓:</strong> Esquistócitos ou plaquetas gigantes.</p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card card-accent">
+          <h3>HCM (Hemoglobina Corpuscular Média)</h3>
+          <span class="badge b-amber">Referência: 27 a 32 pg (ou 30–34 pg)</span>
+          <div class="formula-box" style="font-size:0.78rem; padding:8px;">HCM (pg) = [Hb (g/dL) ÷ RBC (milhões/µL)] × 10</div>
+          <p>Representa a massa média de hemoglobina contida em cada eritrócito. Reduz-se na hipocromia (&lt; 27 pg). Sofre interferência de lipemia ou erro na contagem de RBC.</p>
+        </div>
+
+        <div class="card card-accent">
+          <h3>CHCM (Concentração de Hb Corpuscular)</h3>
+          <span class="badge b-amber">Referência: 30 a 36 g/dL (Índice mais estável)</span>
+          <div class="formula-box" style="font-size:0.78rem; padding:8px;">CHCM (g/dL) = [Hb ÷ Ht (%)] × 100 = HCM ÷ VCM</div>
+          <p><strong>↓ (&lt; 30 g/dL):</strong> Hipocromia ferropriva avançada.<br><strong>↑ Patológico (34,5–38 g/dL):</strong> Esferocitose e Xerocitose Hereditária (desidratação celular).<br><strong>&gt; 37–38 g/dL fora disso:</strong> Artefato pré-analítico (crioaglutinação, hemólise in vitro, lipemia).</p>
+        </div>
+
+        <div class="card card-accent">
+          <h3>RDW (Índice de Anisocitose)</h3>
+          <span class="badge b-amber">RDW-CV: 11,5%–15,0% | RDW-DP: 37–47 fL</span>
+          <p>Quantifica a anisocitose pela curva gaussiana de volume:</p>
+          <ul>
+            <li><strong>Ferropriva:</strong> Eleva-se precocemente pela coexistência de novos micrócitos com normócitos antigos.</li>
+            <li><strong>Traço Talassêmico:</strong> Hemácias uniformemente microcíticas com RDW normal ou quase normal.</li>
+            <li><strong>Muito elevado:</strong> Populações dimórficas (pós-transfusão, resposta ao ferro, sideroblástica).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: RETICULÓCITOS E IPR -->
+    <section class="slide" data-module="1" data-title="1.6 Avaliação da Resposta Medular pelos Reticulócitos e IPR">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 1 · Cinética Medular</span>
+        <h2 class="slide-title">Avaliação pelos Reticulócitos e Índice de Produção Reticulocitária (IPR)</h2>
+        <p class="slide-subtitle">Eritrócitos recém-liberados com RNA ribossômico residual (policromáticos em Wright; coráveis por azul de cresil brilhante).</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <h3>1. Contagem Percentual (%)</h3>
+          <span class="badge b-cyan">VR: 0,5% a 1,5% (até 2,0%)</span>
+          <p><strong>Limitação crítica:</strong> Um valor percentual isolado é ilusório. Uma contagem de 2% é normal para Ht = 42%, mas revela resposta medular completamente deficiente se o paciente tiver Ht = 20%.</p>
+        </div>
+
+        <div class="card">
+          <h3>2. Contagem Absoluta (/µL)</h3>
+          <span class="badge b-cyan">VR: 20.000 a 100.000 /µL</span>
+          <div class="formula-box" style="font-size:0.76rem;">Ret. Abs = Ret(%) × RBC(milhões) × 10⁴</div>
+          <p>Expressa a quantidade numérica real de reticulócitos liberados por microlitro de sangue periférico (ou 25 a 90 × 10⁹/L).</p>
+        </div>
+
+        <div class="card">
+          <h3>3. Reticulócito Corrigido (%)</h3>
+          <span class="badge b-cyan">Corrige a diluição do Ht</span>
+          <div class="formula-box" style="font-size:0.76rem;">Ret. Corr (%) = Ret(%) × (Ht Pac ÷ 45)</div>
+          <p>Ajusta a porcentagem para o grau de anemia. Alternativa pela Hemoglobina:<br><code>Ret. Corr (%) = Ret(%) × (Hb ÷ 15)</code></p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-accent">
+          <h3>🧮 4. Índice de Produção Reticulocitária (IPR)</h3>
+          <p>Na anemia grave, a eritropoetina elevada libera reticulócitos imaturos de estresse (<em>shift reticulocytes</em>) que levam até 2,5 dias para perder o RNA no sangue periférico (em vez de 1 dia):</p>
+          <div class="formula-box" style="margin: 6px 0;">
+            IPR = Reticulócitos Corrigidos (%) ÷ Fator de Maturação
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Hematócrito do Paciente</th><th>Fator de Maturação (dias)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>36% a 45%</td><td><strong>1,0</strong></td></tr>
+                <tr><td>26% a 35%</td><td><strong>1,5</strong></td></tr>
+                <tr><td>16% a 25%</td><td><strong>2,0</strong></td></tr>
+                <tr><td>&lt; 16%</td><td><strong>2,5</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>🎯 Interpretação Clínica da Resposta Medular</h3>
+          <div class="card card-success" style="padding: 12px;">
+            <h3>IPR &gt; 2,0 a 2,5 → Hiperproliferativa (Regenerativa)</h3>
+            <p>Reflete medula óssea íntegra respondendo vigorosamente à perda periférica: <strong>hemólise ativa</strong> (imune, enzimopatia, membrana) ou <strong>recuperação de perda sanguínea aguda</strong> (3º ao 5º dia).</p>
+          </div>
+          <div class="card card-danger" style="padding: 12px;">
+            <h3>IPR &lt; 2,0 (geralmente &lt; 1,0) → Hipoproliferativa</h3>
+            <p>Resposta medular insuficiente para a gravidade da anemia por:</p>
+            <ol>
+              <li><strong>Carência de substratos:</strong> Ferro, Vitamina B12 ou Folato.</li>
+              <li><strong>Déficit/bloqueio de EPO:</strong> DRC, Anemia da Inflamação (hepcidina + IL-1/TNF-α/IFN-γ), Hipotireoidismo.</li>
+              <li><strong>Insuficiência medular primária:</strong> Aplasia, SMD, leucemias/mieloptise.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: HEMATOSCOPIA PARTE 1 -->
+    <section class="slide" data-module="1" data-title="1.7 Hematoscopia: Poiquilócitos e Alterações de Forma">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 1 · Esfregaço de Sangue Periférico (Parte 1)</span>
+        <h2 class="slide-title">Hematoscopia: Alterações Morfológicas Eritrocitárias</h2>
+        <p class="slide-subtitle">Correlação direta entre a morfologia da hemácia no sangue periférico e o mecanismo patológico subjacente.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Alteração Hematoscópica</th>
+              <th>Descrição Morfológica</th>
+              <th>Doenças / Condições Associadas</th>
+              <th>Base Patológica / Mecanismo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Esferócitos</strong></td>
+              <td>Esféricos, hiperdensos, menores, sem a palidez central bicôncava.</td>
+              <td><span class="badge b-red">Esferocitose Hereditária</span>, <span class="badge b-orange">AHAI Quente</span>, grandes queimaduras.</td>
+              <td>Perda de área de superfície de membrana (espectrina, anquirina) ou fagocitose parcial esplênica de opsoninas.</td>
+            </tr>
+            <tr>
+              <td><strong>Esquizócitos</strong></td>
+              <td>Fragmentos irregulares, cortados, em formato de "capacete" ou triângulo.</td>
+              <td><span class="badge b-red">PTT, SHU, CIVD, HELLP</span>, próteses valvares mecânicas defeituosas.</td>
+              <td>Fragmentação mecânica por cisalhamento das hemácias contra microtrombos de fibrina e plaquetas nos capilares.</td>
+            </tr>
+            <tr>
+              <td><strong>Drepanócitos</strong></td>
+              <td>Hemácias em foice, crescentes, delgadas com extremidades pontiagudas.</td>
+              <td><span class="badge b-amber">Doença Falciforme</span> (HbSS, HbS/β⁰, HbSC).</td>
+              <td>Polimerização das moléculas de desoxi-hemoglobina S sob desoxigenação e acidose tecidual.</td>
+            </tr>
+            <tr>
+              <td><strong>Dacriócitos</strong></td>
+              <td>Hemácias poiquilocíticas deformadas em formato de "lágrima" ou gota.</td>
+              <td><span class="badge b-purple">Mielofibrose Primária</span>, mieloptise (infiltração medular), talassemia maior.</td>
+              <td>Dano mecânico e distorção plástica ao transpassarem as malhas rígidas do estroma medular fibrótico ou esplênico.</td>
+            </tr>
+            <tr>
+              <td><strong>Hemácias em Alvo (Codócitos)</strong></td>
+              <td>Condensação central de Hb circundada por halo claro ("tiro ao alvo").</td>
+              <td><span class="badge b-cyan">Talassemias (α e β)</span>, HbC/HbSC, hepatopatias obstrutivas, pós-esplenectomia.</td>
+              <td>Excesso de membrana lipídica celular relativo ao conteúdo intracelular de hemoglobina (ou precipitação por HbC).</td>
+            </tr>
+            <tr>
+              <td><strong>Eliptócitos / Células em Lápis</strong></td>
+              <td>Ovais e alongadas em formato de charuto ou delgadas como "lápis".</td>
+              <td>Eliptocitose hereditária; <strong>Células em lápis (pencil cells):</strong> <span class="badge b-red">Ferropriva grave</span>.</td>
+              <td>Mutações nas proteínas de autoassociação da espectrina ou fragilidade do citoesqueleto sob carência extrema de ferro.</td>
+            </tr>
+            <tr>
+              <td><strong>Estomatócitos</strong></td>
+              <td>Eritrócitos exibindo fenda retilínea central transparente lembrando uma "boca".</td>
+              <td>Estomatocitose Hereditária (Hidrocitose), hepatopatia alcoólica crônica, fármacos.</td>
+              <td>Alterações patológicas de permeabilidade da membrana a cátions (aumento de Na⁺ e água intracelular).</td>
+            </tr>
+            <tr>
+              <td><strong>Acantócitos</strong></td>
+              <td>Espículas e projeções espinhosas de distribuição irregular e tamanhos variados.</td>
+              <td>Hepatopatia crônica grave (cirrose), abetalipoproteinemia, desnutrição, hipoesplenismo.</td>
+              <td>Infiltração e excesso de colesterol não esterificado na camada lipídica externa da membrana eritrocitária.</td>
+            </tr>
+            <tr>
+              <td><strong>Células Mordidas (Bite) / Bolha (Blister)</strong></td>
+              <td>Perda semicircular periférica ("mordidas") ou vacuoladas ("em bolha").</td>
+              <td><span class="badge b-amber">Deficiência de G6PD</span> (crise oxidativa por feijão-fava, infecções, dapsona, sulfas).</td>
+              <td>Remoção mecânica esplênica (<em>pitting</em>) de corpúsculos de Heinz insolúveis aderidos à membrana pelos macrófagos.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: HEMATOSCOPIA PARTE 2 -->
+    <section class="slide" data-module="1" data-title="1.8 Hematoscopia: Inclusões, Agrupamentos e Leucócitos">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 1 · Esfregaço de Sangue Periférico (Parte 2)</span>
+        <h2 class="slide-title">Fenômenos de Agrupamento, Inclusões e Série Branca</h2>
+        <p class="slide-subtitle">Diferenciação entre Rouleaux e Aglutinação, inclusões citoplasmáticas e pleocariócitos.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Achado / Inclusão</th>
+              <th>Descrição Morfológica</th>
+              <th>Doenças / Condições Associadas</th>
+              <th>Base Patológica / Mecanismo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Fenômeno de Rouleaux</strong></td>
+              <td>Hemácias empilhadas de forma organizada e contínua ("pilhas de moedas").</td>
+              <td><span class="badge b-purple">Mieloma Múltiplo</span>, Macroglobulinemia de Waldenström, processos inflamatórios (VHS ↑).</td>
+              <td>Neutralização da carga zeta negativa da superfície das hemácias pelo excesso de proteínas plasmáticas de alto peso.</td>
+            </tr>
+            <tr>
+              <td><strong>Aglutinação Eritrocitária</strong></td>
+              <td>Agrupamento caótico e disforme de hemácias aderidas em múltiplos blocos.</td>
+              <td><span class="badge b-cyan">Doença da Crioaglutinina (AHAI a frio - IgM)</span>, <em>Mycoplasma pneumoniae</em>, mononucleose.</td>
+              <td>Ligação multivalente de anticorpos IgM aos antígenos da membrana de eritrócitos sob baixas temperaturas (&lt; 30 °C).</td>
+            </tr>
+            <tr>
+              <td><strong>Corpúsculos de Howell-Jolly</strong></td>
+              <td>Inclusões arredondadas, densas, azul-arroxeadas, de localização excêntrica.</td>
+              <td><span class="badge b-amber">Asplenia Anatômica (pós-esplenectomia) ou Funcional (Falciforme)</span>, megaloblástica.</td>
+              <td>Remanescentes de fragmentos de cromatina/DNA nuclear que não foram filtrados pelo baço por perda da função esplênica.</td>
+            </tr>
+            <tr>
+              <td><strong>Corpúsculos de Pappenheimer</strong></td>
+              <td>Grânulos basofílicos pequenos e irregulares contendo ferro (positivos ao Perls).</td>
+              <td><span class="badge b-red">Anemias Sideroblásticas</span>, estados de sobrecarga grave de ferro, pós-esplenectomia.</td>
+              <td>Acúmulo mitocondrial perinuclear de ferro não incorporado ao anel de protoporfirina do heme.</td>
+            </tr>
+            <tr>
+              <td><strong>Corpúsculos de Heinz</strong></td>
+              <td>Precipitados de Hb insolúveis visíveis sob coloração supravital (violeta de metila / azul de cresil).</td>
+              <td><span class="badge b-amber">Deficiência de G6PD</span>, síndromes de hemoglobina instável, esplenectomizados.</td>
+              <td>Oxidação patológica das cadeias de globina e grupos sulfidrila da Hb por incapacidade redutora de NADPH/glutationa.</td>
+            </tr>
+            <tr>
+              <td><strong>Pontilhado Basófilo (Ponteado)</strong></td>
+              <td>Pontos finos ou grosseiros azul-arroxeados difusos em todo o citoplasma.</td>
+              <td><span class="badge b-pink">Intoxicação por Chumbo (Saturnismo)</span>, Talassemias (α e β), Def. de Pirimidina 5'-nucleotidase, SMD.</td>
+              <td>Precipitação anômala de agregados de RNA e ribossomos citoplasmáticos por bloqueio da degradação enzimática.</td>
+            </tr>
+            <tr>
+              <td><strong>Neutrófilos Hipersegmentados (Pleocariócitos)</strong></td>
+              <td>Granulócitos neutrófilos com ≥ 5 a 6 lóbulos nucleares bem definidos.</td>
+              <td><span class="badge b-green">Anemia Megaloblástica</span> (Deficiência de Vitamina B12 e/ou Ácido Fólico).</td>
+              <td>Atraso na divisão e maturação nuclear com dissociação núcleo-citoplasmática por defeito na síntese de DNA.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: MÓDULO 2 - CLASSIFICAÇÃO MORFOLÓGICA -->
+    <section class="slide" data-module="2" data-title="2.1 Classificação Morfológica (Matriz VCM × RDW)">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 2 · Classificação Morfológica e Cinética</span>
+        <h2 class="slide-title">Matriz Diagnóstica Morfológica (Cruzamento VCM × RDW)</h2>
+        <p class="slide-subtitle">Combinação do volume médio (VCM) com a heterogeneidade celular (RDW normal 11,5–15% vs. aumentado &gt; 15%).</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Faixa de VCM</th>
+              <th>RDW Normal (População Homogênea)</th>
+              <th>RDW Aumentado (População Heterogênea / Anisocitose)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <span class="badge b-red" style="font-size:0.85rem;">Microcítica</span><br>
+                <strong>VCM &lt; 80 fL</strong>
+              </td>
+              <td>
+                <ul>
+                  <li><strong>Talassemia menor</strong> (traço α ou β-talassêmico)</li>
+                  <li><strong>Anemia da inflamação / doença crônica</strong> (minoria dos casos de longa duração)</li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li><strong>Anemia ferropriva</strong> (estabelecida / franca)</li>
+                  <li><strong>Talassemia maior e intermédia</strong></li>
+                  <li><strong>Anemia sideroblástica congênita</strong></li>
+                  <li><strong>Envenenamento por chumbo (saturnismo)</strong></li>
+                  <li><strong>Hemoglobinopatias microcíticas</strong> (Doença da HbH, HbS/β-talassemia)</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="badge b-cyan" style="font-size:0.85rem;">Normocítica</span><br>
+                <strong>VCM 80–100 fL</strong>
+              </td>
+              <td>
+                <ul>
+                  <li><strong>Anemia da doença renal crônica (DRC)</strong></li>
+                  <li><strong>Anemia da inflamação / doença crônica</strong> (maioria dos casos: 70–80%)</li>
+                  <li><strong>Esferocitose hereditária</strong> (forma compensada/típica)</li>
+                  <li><strong>Anemia aplásica</strong> (subgrupos sem macrocitose) e <strong>Aplasia eritroide pura</strong></li>
+                  <li><strong>Endocrinopatias</strong> (hipotireoidismo típico, Addison, deficiência androgênica)</li>
+                  <li><strong>Anemia fisiológica da gravidez</strong> (dilucional)</li>
+                  <li><strong>Hemorragia aguda</strong> (fase inicial hiperaguda, pré-reticulocitose)</li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li><strong>Anemia ferropriva precoce / incipiente</strong></li>
+                  <li><strong>Doença falciforme</strong> (homozigose HbSS) e Hemoglobinopatia C</li>
+                  <li><strong>Anemia sideroblástica</strong> (população eritrocitária dimórfica)</li>
+                  <li><strong>Anemias mistas / carências combinadas</strong> (ferro + folato/B12)</li>
+                  <li><strong>Fase inicial de resposta ao tratamento hematínico</strong> (resposta reticulocitária ao ferro/vitaminas)</li>
+                  <li><strong>Pós-transfusão de hemácias</strong> (dupla população celular)</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="badge b-purple" style="font-size:0.85rem;">Macrocítica</span><br>
+                <strong>VCM &gt; 100 fL</strong>
+              </td>
+              <td>
+                <ul>
+                  <li><strong>Abuso crônico de álcool / hepatopatias crônicas</strong> (macrocitose homogênea não megaloblástica)</li>
+                  <li><strong>Anemia aplásica</strong> (alguns casos com clones hipoplásicos)</li>
+                  <li><strong>Hipotireoidismo</strong> (quando cursa com macrocitose homogênea)</li>
+                  <li><strong>DPOC / hipoxemia crônica</strong></li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li><strong>Anemias megaloblásticas</strong> (deficiência grave de vitamina B12 ou de folato)</li>
+                  <li><strong>Anemias hemolíticas ativas / hiperproliferativas</strong> (com intensa reticulocitose; ex.: AHAI)</li>
+                  <li><strong>Síndromes mielodisplásicas (SMD)</strong> e anemia sideroblástica adquirida</li>
+                  <li><strong>Fármacos citotóxicos e antimetabólitos</strong> (hidroxiureia, metotrexato, azatioprina, AZT)</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: ARMADILHAS DO VCM -->
+    <section class="slide" data-module="2" data-title="2.2 Armadilhas Diagnósticas do VCM">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 2 · Precauções na Interpretação Automatizada</span>
+        <h2 class="slide-title">As 4 Grandes Armadilhas Diagnósticas do VCM</h2>
+        <p class="slide-subtitle">O VCM baseia-se na média aritmética volumétrica — populações antagônicas ou artefatos pré-analíticos distorcem o valor.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-warn">
+          <span class="badge b-amber" style="width:fit-content;">Armadilha 1</span>
+          <h3>Anemias Mistas e Populações Dimórficas (Falso VCM Normocítico)</h3>
+          <p>A coexistência de deficiência de ferro (microcitose) com deficiência de folato ou B12 (macrocitose) — ou traço talassêmico com anemia perniciosa — produz duas subpopulações distintas que se neutralizam matematicamente na média, resultando em um <strong>VCM falsamente normocítico (80 a 100 fL)</strong>.</p>
+          <p><strong>🔍 Como desmascarar:</strong> RDW substancialmente elevado (&gt; 18–20%), histograma automatizado exibindo <strong>curva bimodal</strong> e hematoscopia revelando dupla população com neutrófilos hipersegmentados e micrócitos hipocrômicos.</p>
+        </div>
+
+        <div class="card card-info">
+          <span class="badge b-cyan" style="width:fit-content;">Armadilha 2</span>
+          <h3>Reticulocitose Exuberante (Falsa Macrocitose)</h3>
+          <p>Os reticulócitos recém-liberados são células maiores, mais hidratadas e de maior volume que os eritrócitos maduros. Em anemias hiperproliferativas acentuadas (AHAI, crise de G6PD ou pós-hemorragia aguda), a liberação massiva de reticulócitos desloca a média celular e eleva o <strong>VCM para &gt; 100 a 115 fL</strong> sem defeito na síntese de DNA.</p>
+          <p><strong>🔍 Como desmascarar:</strong> Confirmação de contagem absoluta de reticulócitos e IPR elevados + policromasia expressiva ao esfregaço periférico.</p>
+        </div>
+
+        <div class="card card-danger">
+          <span class="badge b-red" style="width:fit-content;">Armadilha 3</span>
+          <h3>Crioaglutininas e Rouleaux (Pseudomacrocitose Pré-Analítica)</h3>
+          <p>Na Doença da Crioaglutinina (AHAI a frio por IgM) ou infecção por <em>Mycoplasma pneumoniae</em>, a queda térmica in vitro (&lt; 30 °C) aglutina hemácias em grumos. Ao passarem pelo sensor de impedância, múltiplos eritrócitos são lidos como uma única hemácia gigante: <strong>RBC falsamente deprimida, VCM exorbitante (&gt; 120–140 fL) e CHCM aberrante (&gt; 38 g/dL)</strong>. Fenômeno análogo ocorre no <em>rouleaux</em> do Mieloma Múltiplo.</p>
+          <p><strong>🔍 Como desmascarar:</strong> Pré-aquecer a amostra a <strong>37 °C</strong> desfaz a crioaglutinação e normaliza os índices; a lâmina confirma grumos ou <em>rouleaux</em>.</p>
+        </div>
+
+        <div class="card card-accent">
+          <span class="badge b-purple" style="width:fit-content;">Armadilha 4</span>
+          <h3>Fragmentação Mecânica e Edema Osmótico In Vitro</h3>
+          <ul>
+            <li><strong>Pseudomicrocitose por fragmentação:</strong> A presença maciça de esquistócitos (PTT e SHU) ou plaquetas gigantes pode confundir os canais de contagem, rebaixando artificialmente o VCM.</li>
+            <li><strong>Edema osmótico in vitro:</strong> Hiperglicemia acentuada (&gt; 400–600 mg/dL) gera hiperosmolaridade intracelular no tubo; quando o sangue é diluído no meio isotônico do equipamento, a entrada repentina de água provoca tumefação celular e elevação espúria do VCM.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 12: CLASSIFICAÇÃO CINÉTICA E HIPOPROLIFERATIVAS -->
+    <section class="slide" data-module="2" data-title="2.3 Classificação Cinética e Anemias Hipoproliferativas">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 2 · Classificação Fisiopatológica (Baseada no IPR)</span>
+        <h2 class="slide-title">Avaliação Cinética e Anemias Hipoproliferativas (IPR &lt; 2,0)</h2>
+        <p class="slide-subtitle">Quando a medula óssea falha em compensar a anemia (habitualmente IPR &lt; 1,0 e reticulócitos &lt; 20.000–25.000/µL).</p>
+      </div>
+
+      <div class="flow-tree" style="background: var(--bg-card-subtle); border-radius: 12px; border: 1px solid var(--border-glass);">
+        <div class="flow-node">AVALIAÇÃO CINÉTICA DA ANEMIA (Pelo Índice de Produção Reticulocitária - IPR)</div>
+        <div class="grid-2" style="width: 100%; gap: 20px;">
+          <div style="text-align: center;">
+            <div class="flow-arrow">▼</div>
+            <div class="flow-node" style="border-color: #ef4444;">IPR &lt; 2,0 (ou &lt; 1,0) — ANEMIAS HIPOPROLIFERATIVAS (Resposta Inadequada)</div>
+          </div>
+          <div style="text-align: center;">
+            <div class="flow-arrow">▼</div>
+            <div class="flow-node" style="border-color: #10b981;">IPR ≥ 2,0 — ANEMIAS HIPERPROLIFERATIVAS (Hemorragia Aguda 3º-5º dia / Hemólise)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-4">
+        <div class="card card-accent">
+          <span class="badge b-red">1. Insuficiência Medular</span>
+          <h3>Defeito de Diferenciação</h3>
+          <ul>
+            <li><strong>Anemia Aplásica Adquirida:</strong> destruição imune mediada por linfócitos T autorreativos (IFN-γ, TNF-α), medula &lt; 25% celular + pancitopenia.</li>
+            <li><strong>Aplasia Eritroide Pura:</strong> Parvovírus B19, timoma, autoimune.</li>
+            <li><strong>Mieloptise / Infiltração:</strong> leucemias, linfomas, metástases, mielofibrose (dacriócitos + leucoeritroblastose).</li>
+            <li><strong>SMD Hipoplásica e Hereditárias:</strong> Fanconi, Diamond-Blackfan.</li>
+          </ul>
+        </div>
+
+        <div class="card card-accent">
+          <span class="badge b-purple">2. Defeito de Proliferação</span>
+          <h3>Síntese Deficiente de DNA</h3>
+          <p>Dissociação núcleo-citoplasmática e apoptose intramedular (eritropoese ineficaz):</p>
+          <ul>
+            <li><strong>Deficiência de Vitamina B12:</strong> anemia perniciosa, gastrectomia, doença celíaca, Crohn ileal, dieta estrita.</li>
+            <li><strong>Deficiência de Folato:</strong> privação dietética, alcoolismo, má absorção, hiperconsumo.</li>
+            <li><strong>Fármacos:</strong> hidroxiureia, metotrexato, azatioprina, AZT.</li>
+          </ul>
+        </div>
+
+        <div class="card card-accent">
+          <span class="badge b-amber">3. Maturação Citoplasmática</span>
+          <h3>Defeito de Heme ou Globina</h3>
+          <p>Divisões extras gerando microcitose e hipocromia:</p>
+          <ul>
+            <li><strong>Defeitos do Heme:</strong> Anemia Ferropriva, Anemia Sideroblástica Congênita (mutações <em>ALAS2</em> ou <em>SLC25A38</em>) e Saturnismo (chumbo bloqueia ferroquelatase e ALA-desidratase).</li>
+            <li><strong>Defeitos de Globina:</strong> Talassemias α e β (precipitação de cadeias órfãs).</li>
+          </ul>
+        </div>
+
+        <div class="card card-accent">
+          <span class="badge b-cyan">4. Déficit/Bloqueio de EPO</span>
+          <h3>Estímulo Hormonal Insuficiente</h3>
+          <ul>
+            <li><strong>Doença Renal Crônica (DRC):</strong> perda do parênquima peritubular renal (instala-se com TFGe &lt; 45 mL/min/1,73 m²).</li>
+            <li><strong>Anemia da Inflamação:</strong> IL-1, TNF-α e IFN-γ inibem EPO e receptores eritroides + IL-6/Hepcidina sequestra ferro.</li>
+            <li><strong>Endocrinopatias:</strong> hipotireoidismo, doença de Addison, hipogonadismo.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 13: ANEMIAS HIPERPROLIFERATIVAS E HEMÓLISE -->
+    <section class="slide" data-module="2" data-title="2.4 Anemias Hiperproliferativas e Eixos das Anemias Hemolíticas">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 2 · Resposta Medular Preservada (IPR ≥ 2,0 a 2,5)</span>
+        <h2 class="slide-title">Hemorragia Aguda e Classificação Dual das Anemias Hemolíticas</h2>
+        <p class="slide-subtitle">Na hemorragia aguda, o pico reticulocitário ocorre entre o 3º e 5º dia. Nas hemolíticas, a sobrevida eritrocitária cai para &lt; 90–120 dias.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-danger">
+          <h3>💥 Eixo 1A: Hemólise Intravascular (Lise na Luz Vascular)</h3>
+          <p><strong>Mecanismo:</strong> Ruptura direta dos eritrócitos dentro da luz vascular, liberando hemoglobina livre diretamente no plasma.</p>
+          <p><strong>Perfil Patognomônico:</strong> Hemoglobinemia (plasma róseo/castanho), <strong>hemoglobinúria</strong> (urina escura com fita positiva sem hemácias no sedimento), <strong>hemossiderinúria</strong> (marca crônica tubular renal), depleção precoce e quase total de haptoglobina e elevação acentuada de DHL.</p>
+          <p><strong>Principais Causas:</strong></p>
+          <ul>
+            <li><strong>Complemento:</strong> HPN (falta de CD55/CD59 → C5b-9) e Hemoglobinúria Paroxística a Frio (anticorpo bifásico de Donath-Landsteiner).</li>
+            <li><strong>Microangiopáticas/Mecânicas:</strong> PTT, SHU, CIVD, HELLP, prótese valvar metálica, marcha.</li>
+            <li><strong>Transfusional e Infecciosa/Tóxica:</strong> incompatibilidade ABO aguda, sepse por <em>Clostridium perfringens</em> (lecitinase), malária grave, peçonhas.</li>
+          </ul>
+        </div>
+
+        <div class="card card-warn">
+          <h3>🛡️ Eixo 1B: Hemólise Extravascular (Sistema Reticuloendotelial)</h3>
+          <p><strong>Mecanismo:</strong> Remoção fagocitária dos eritrócitos anômalos ou opsonizados pelos macrófagos nos cordões esplênicos do baço e sinusoides do fígado e medula óssea.</p>
+          <p><strong>Perfil Laboratorial e Clínico:</strong> Hiperbilirrubinemia indireta, ↑ urobilinogênio fecal/urinário, ↑ DHL, haptoglobina reduzida (menos depletada que na intravascular), <strong>ausência</strong> de hemoglobinúria e de hemossiderinúria. Expressa-se por <strong>esplenomegalia e colelitíase precoce</strong>.</p>
+          <p><strong>Principais Causas:</strong></p>
+          <ul>
+            <li><strong>Imunológicas:</strong> AHAI por anticorpos quentes (IgG → receptores Fcγ esplênicos → fagocitose parcial gerando esferócitos).</li>
+            <li><strong>Defeitos de Membrana:</strong> Esferocitose e eliptocitose hereditárias (aprisionamento nos cordões de Billroth).</li>
+            <li><strong>Hemoglobinopatias e Enzimopatias:</strong> Doença falciforme, talassemias, deficiência de piruvatoquinase e G6PD.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Eixo 2: Origem do Defeito</th>
+              <th>Subdivisão Biológica</th>
+              <th>Etiologias Específicas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="3"><strong>Intracorpusculares</strong><br><span class="badge b-purple">Defeito intrínseco da hemácia</span><br><small>(Congênitas/hereditárias, <strong>exceto HPN</strong> que é adquirida)</small></td>
+              <td><strong>Membrana Eritrocitária</strong></td>
+              <td>Esferocitose hereditária (anquirina, espectrina, banda 3), Eliptocitose/Piropoiquilocitose, Estomatocitose (hidrocitose por <em>RHAG/SLC4A1</em> e xerocitose por <em>PIEZO1</em>) e <strong>HPN</strong> (mutação somática adquirida no gene <em>PIGA</em>).</td>
+            </tr>
+            <tr>
+              <td><strong>Hemoglobinopatias</strong></td>
+              <td>Qualitativas: Doença Falciforme (HbSS, HbSC, HbS/β) e Hb instáveis (corpúsculos de Heinz). Quantitativas: Talassemias β e α (HbH).</td>
+            </tr>
+            <tr>
+              <td><strong>Enzimopatias</strong></td>
+              <td>Via das Pentoses: <strong>Deficiência de G6PD</strong>. Via Glicolítica: <strong>Deficiência de Piruvatoquinase</strong>, GPI, Fosfofrutoquinase. Nucleotídeos: Pirimidina 5'-nucleotidase.</td>
+            </tr>
+            <tr>
+              <td><strong>Extracorpusculares</strong><br><span class="badge b-cyan">Agressão externa (Adquiridas)</span></td>
+              <td><strong>Imunes, Mecânicas, Infecciosas e Tóxicas</strong></td>
+              <td>AHAI quente (IgG), AHAI fria (IgM), Donath-Landsteiner, aloimunização transfusional/perinatal, drogas (cefalosporinas, fludarabina, inibidores de checkpoint); PTT, SHU, CIVD, HELLP, valva metálica; Malária, Babesiose, <em>C. perfringens</em>; queimaduras, chumbo, cobre (Doença de Wilson), dapsona, hiperesplenismo.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SLIDE 14: MÓDULO 3 - ANEMIAS MICROCÍTICAS E PERFIL DO FERRO -->
+    <section class="slide" data-module="3" data-title="3.1 Investigação das Anemias Microcíticas e Perfil do Ferro">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 3 · Investigação Laboratorial Direcionada (VCM &lt; 80 fL)</span>
+        <h2 class="slide-title">Perfil do Ferro: Parâmetros, Pontos de Corte (SBP 2026) e Interpretação</h2>
+        <p class="slide-subtitle">Avaliação integrada dos estoques, transporte plasmático e demanda celular eritroide de ferro.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-accent">
+          <h3>1. Ferritina Sérica (Teste mais específico de estoque)</h3>
+          <p>Cada <strong>1 ng/mL (µg/L) equivale a 8 a 10 mg</strong> de ferro estocado. <em>Limitação:</em> é proteína de fase aguda que se eleva em infecções, inflamações, hepatopatias e neoplasias (solicitar sempre com <strong>PCR</strong>).</p>
+          <ul>
+            <li><strong>Adultos SEM inflamação (PCR normal):</strong>
+              <br>• <code>&lt; 15 µg/L</code>: especificidade de <strong>99%</strong> para deficiência absoluta de ferro.
+              <br>• <code>&lt; 30 µg/L</code>: sensibilidade de <strong>92%</strong> com alta especificidade (corte adotado em diretrizes).
+            </li>
+            <li><strong>Adultos COM inflamação / DRC / Neoplasia:</strong> <code>&lt; 100 µg/L</code> (ou entre 100 e 300 µg/L associado a IST &lt; 20%).</li>
+            <li><strong>Crianças (Diretrizes SBP 2026 / OMS):</strong>
+              <br>• <strong>Sem infecção (PCR normal):</strong> 0 a 59 meses (&lt; 5 anos): <code>&lt; 12 µg/L</code> | ≥ 5 a &lt; 20 anos: <code>&lt; 15 µg/L</code>.
+              <br>• <strong>Com infecção ativa (PCR ↑):</strong> 0 a 59 meses: <code>&lt; 30 µg/L</code> | ≥ 5 a &lt; 20 anos: <code>&lt; 70 µg/L</code>.
+            </li>
+          </ul>
+        </div>
+
+        <div class="grid-2" style="gap: 12px;">
+          <div class="card">
+            <h3>2. Ferro Sérico</h3>
+            <span class="badge b-cyan">VR: 50 a 150 µg/dL</span>
+            <p>Quantifica o ferro ligado à transferrina. Sofre ampla flutuação diurna (maior pela manhã) e cai tanto na ferropenia quanto na inflamação induzida por hepcidina. Não usar isoladamente.</p>
+          </div>
+          <div class="card">
+            <h3>3. CTLF / TIBC</h3>
+            <span class="badge b-cyan">VR: 228 a 428 µg/dL</span>
+            <p>Mede os sítios disponíveis da transferrina. <strong>Eleva-se na ferropenia</strong> (o fígado aumenta a síntese de transferrina) e <strong>reduz-se na inflamação crônica</strong>.</p>
+          </div>
+          <div class="card">
+            <h3>4. Saturação (IST %)</h3>
+            <div class="formula-box" style="font-size:0.74rem; padding:5px;">IST = (Ferro ÷ CTLF) × 100</div>
+            <p>VR: 20–40%. Um <strong>IST &lt; 16%</strong> confirma suprimento inadequado para a eritropoese. <strong>IST &gt; 45–60%</strong> sugere sobrecarga sistêmica (hemocromatose ou sideroblástica).</p>
+          </div>
+          <div class="card">
+            <h3>5. Receptor Solúvel (sTfR)</h3>
+            <span class="badge b-green">Não altera na inflamação!</span>
+            <p>Teste de escolha para diferenciar <strong>Anemia da Inflamação isolada</strong> (sTfR normal; razão sTfR/log ferritina ≈ 1) da <strong>Associação Inflamação + Ferropenia real</strong> (sTfR elevado).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 15: DIAGNÓSTICO DIFERENCIAL DAS MICROCÍTICAS E CUIDADOS -->
+    <section class="slide" data-module="3" data-title="3.2 Diagnóstico Diferencial das Microcíticas, HbA2 e Endoscopia">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 3 · Tabela Comparativa e Condutas Práticas</span>
+        <h2 class="slide-title">Diagnóstico Diferencial das Anemias Microcíticas e Cuidados Mandatórios</h2>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Parâmetro</th>
+              <th>Anemia Ferropriva</th>
+              <th>Doença Crônica / Inflamação</th>
+              <th>Associação Ferropriva + Inflamação</th>
+              <th>Traço Talassêmico (α ou β menor)</th>
+              <th>Anemia Sideroblástica Congênita</th>
+              <th>Saturnismo (Chumbo)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Ferritina Sérica</strong></td>
+              <td><span class="badge b-red">↓ (&lt; 15–30 µg/L)</span></td>
+              <td><span class="badge b-amber">↑ (&gt; 100–200 µg/L)</span></td>
+              <td>Normal ou ↓ (&lt; 100 µg/L)</td>
+              <td>Normal a Aumentada</td>
+              <td><span class="badge b-amber">↑ (&gt; 200 µg/L)</span></td>
+              <td>Normal</td>
+            </tr>
+            <tr>
+              <td><strong>Ferro Sérico</strong></td>
+              <td>Reduzido</td>
+              <td>Reduzido</td>
+              <td>Reduzido</td>
+              <td>Normal a Aumentado</td>
+              <td>Aumentado</td>
+              <td>Normal / Variável</td>
+            </tr>
+            <tr>
+              <td><strong>CTLF / TIBC</strong></td>
+              <td><span class="badge b-green">Aumentada</span></td>
+              <td>Reduzida ou Normal</td>
+              <td>Reduzida</td>
+              <td>Normal</td>
+              <td>Normal a Reduzida</td>
+              <td>Normal</td>
+            </tr>
+            <tr>
+              <td><strong>IST (%)</strong></td>
+              <td><span class="badge b-red">↓ (&lt; 16%)</span></td>
+              <td>↓ (&lt; 20–30%)</td>
+              <td>↓ (&lt; 20%)</td>
+              <td>Normal a Aumentado</td>
+              <td><span class="badge b-purple">↑ (&gt; 45%)</span></td>
+              <td>Normal / ↑</td>
+            </tr>
+            <tr>
+              <td><strong>sTfR e RDW</strong></td>
+              <td>sTfR ↑ | RDW ↑ (&gt;15%)</td>
+              <td>sTfR Normal | RDW Normal</td>
+              <td>sTfR ↑ | RDW ↑</td>
+              <td>sTfR Normal | <strong>RDW Normal</strong></td>
+              <td>sTfR Normal | RDW ↑ (dimórfica)</td>
+              <td>sTfR Normal | RDW ↑</td>
+            </tr>
+            <tr>
+              <td><strong>Hematoscopia e Confirmação</strong></td>
+              <td>Micrócitos pálidos, <em>pencil cells</em>. Confirma com resposta ao Fe.</td>
+              <td>Normo/micro, <em>rouleaux</em>, PCR e VHS ↑.</td>
+              <td>População mista hipocrômica; sTfR ↑; prova com Fe IV.</td>
+              <td>Hemácias em alvo, pontilhado basófilo. <strong>HPLC: HbA2 &gt; 3,5%</strong> (β) ou PCR (α).</td>
+              <td>Corpúsculos de Pappenheimer. <strong>Mielograma Perls: ≥15% sideroblastos em anel</strong>.</td>
+              <td>Pontilhado basófilo grosseiro. Plumbemia + ALA urinário ↑.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-warn">
+          <h3>⚠️ Por que corrigir a ferropenia ANTES da Eletroforese de Hb?</h3>
+          <p>A anemia ferropriva concomitante reduz a síntese e a concentração de <strong>HbA₂</strong>. No traço β-talassêmico menor (cujo critério diagnóstico é HbA₂ &gt; 3,5%), a ferropenia não tratada reduz a HbA₂ para uma faixa limítrofe falso-normal (3,2 a 3,5%), <strong>mascarando o diagnóstico de betatalassemia menor</strong>. Deve-se repor e normalizar os estoques de ferro antes de coletar a eletroforese/HPLC.</p>
+        </div>
+
+        <div class="card card-danger">
+          <h3>🔎 Quando indicar EDA e Colonoscopia na Ferropenia?</h3>
+          <p><strong>Indicações formais:</strong> Todos os <strong>homens adultos</strong>, todas as <strong>mulheres na pós-menopausa</strong>, mulheres na pré-menopausa com sintomas digestivos ou sangramento menstrual desproporcional, indivíduos de meia-idade/idosos com ferropenia mesmo sem anemia (descartar carcinoma colorretal/gástrico e angiodisplasias) e pacientes refratários ao ferro oral (pesquisar <em>H. pylori</em> e biópsias duodenais para Doença Celíaca).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 16: INVESTIGAÇÃO DAS NORMOCÍTICAS -->
+    <section class="slide" data-module="3" data-title="3.3 Investigação das Anemias Normocíticas (VCM 80–100 fL)">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 3 · Abordagem Guiada pelo IPR e Teste de Coombs Direto (TAD)</span>
+        <h2 class="slide-title">Algoritmo Diagnóstico das Anemias Normocíticas</h2>
+        <p class="slide-subtitle">Estratificação inicial baseada na resposta proliferativa medular pelo IPR.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-info">
+          <h3>📉 Via Hipoproliferativa (IPR &lt; 2,0): Passo a Passo</h3>
+          <ol>
+            <li><strong>Fase Inicial da Anemia Ferropriva:</strong> VCM ainda normocítico (eritrócitos maduros pré-existentes), porém com <strong>RDW já aumentado</strong>, ferritina baixa e IST &lt; 16%.</li>
+            <li><strong>Anemia da Inflamação / Doença Crônica:</strong> 70% a 80% são normocíticas e normocrômicas (Hb 8–10 g/dL), ferritina normal ou elevada (&gt;100–200 µg/L), ferro sérico e CTLF reduzidos, PCR e VHS elevados.</li>
+            <li><strong>Anemia da Doença Renal Crônica (DRC):</strong> surge quando a <strong>TFGe cai abaixo de 45 mL/min/1,73 m²</strong> por perda da síntese peritubular de EPO.</li>
+            <li><strong>Endocrinopatias Sistêmicas:</strong> dosar <strong>TSH e T4 livre</strong> (hipotireoidismo), <strong>cortisol basal e eletrólitos</strong> (insuficiência adrenal / Addison) e <strong>testosterona</strong> em homens com suspeita de hipogonadismo.</li>
+            <li><strong>Avaliação da Medula Óssea (Mielograma + Biópsia + Citogenética):</strong> indicar se os perfis acima forem normais, na presença de <strong>citopenias associadas</strong> (bicitopenia/pancitopenia) ou reticulócitos &lt; 0,1% (&lt;10.000/µL → aplasia pura de células vermelhas).</li>
+          </ol>
+        </div>
+
+        <div class="card card-accent">
+          <h3>📈 Via Hiperproliferativa (IPR ≥ 2,0): Algoritmo de Hemólise</h3>
+          <p><strong>1º Passo — Confirmar Quarteto Laboratorial Hemolítico:</strong> ↑ LDH + ↑ Bilirrubina Indireta + ↓ Haptoglobina (+ Hemoglobinúria / Hemossiderinúria se intravascular).</p>
+          <p><strong>2º Passo — Solicitar Teste de Antiglobulina Direto (TAD / Coombs Direto):</strong></p>
+          <div class="grid-2" style="gap: 10px; margin-top: 4px;">
+            <div style="background: rgba(239,68,68,0.10); border: 1px solid #ef4444; padding: 10px; border-radius: 8px;">
+              <strong style="color:#ef4444;">TAD POSITIVO → AHAI</strong>
+              <p style="font-size:0.8rem; margin-top:4px;">Tipagem monoespecífica: IgG ± C3d (anticorpos quentes; microesferócitos em 30–40%) vs. C3d isolado (crioaglutininas IgM). Investigar LLC, linfomas, LES, <em>Mycoplasma</em> e fármacos.</p>
+            </div>
+            <div style="background: rgba(6,182,212,0.10); border: 1px solid #06b6d4; padding: 10px; border-radius: 8px;">
+              <strong style="color:#0891b2;">TAD NEGATIVO → Avaliar Esfregaço!</strong>
+              <p style="font-size:0.8rem; margin-top:4px;">
+                • <strong>Com Esquizócitos:</strong> Microangiopatia — Emergência! (PTT [ADAMTS13], SHU, CIVD, HELLP, valva metálica).<br>
+                • <strong>Sem Esquizócitos:</strong> Esferócitos (Esferocitose → teste EMA), Bite/Heinz (G6PD), Drepanócitos (Falciforme) ou TAD neg + hemossiderinúria/ferropenia (<strong>HPN</strong> → citometria CD55/CD59).
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 17: INVESTIGAÇÃO DAS MACROCÍTICAS -->
+    <section class="slide" data-module="3" data-title="3.4 Investigação das Anemias Macrocíticas e Anemia Perniciosa">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 3 · Abordagem das Macrocitoses (VCM &gt; 100 fL)</span>
+        <h2 class="slide-title">Macrocitose Megaloblástica vs. Não Megaloblástica e Metabólitos</h2>
+        <p class="slide-subtitle">Diferenciação morfológica, interpretação da faixa cinzenta da Vitamina B12 e confirmação de Anemia Perniciosa.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>🔬 Não Megaloblástica vs. Megaloblástica</h3>
+          <ul>
+            <li><strong>Padrão Não Megaloblástico (VCM 100–115 fL):</strong> Sem neutrófilos hipersegmentados. Causas: <strong>Alcoolismo e Hepatopatias</strong> (macrócitos arredondados, estomatócitos, codócitos), <strong>Hipotireoidismo</strong>, <strong>Reticulocitose marcada</strong> (IPR ≥ 2) e <strong>Síndromes Mielodisplásicas - SMD</strong> (neutrófilos hipogranulares e anomalia <em>pseudo-Pelger-Huët</em>).</li>
+            <li><strong>Padrão Megaloblástico (VCM habitualmente &gt; 115 fL):</strong> Reticulócitos baixos (IPR &lt; 1), <strong>macro-ovalócitos</strong> e <strong>neutrófilos hipersegmentados</strong> (≥ 1 neutrófilo com 6 lóbulos ou ≥ 5 com 5 lóbulos por 100 leucócitos) + eritropoese ineficaz (hemólise intramedular com DHL muito elevado e BI discretamente elevada).</li>
+          </ul>
+        </div>
+
+        <div class="card card-accent">
+          <h3>🧪 Dosagem de Vitaminas e Papel do MMA e Homocisteína</h3>
+          <ul>
+            <li><strong>Ácido Fólico Sérico:</strong> &lt; 3 ng/mL confirma carência recente (sofre rápida correção após refeições hospitalares).</li>
+            <li><strong>Vitamina B12 Sérica:</strong> <code>&lt; 100 pg/mL</code> confirma deficiência severa; <code>&gt; 300 pg/mL</code> afasta; <strong>100 a 300 pg/mL = Faixa Cinzenta</strong> (solicitar MMA e Homocisteína antes de tratar!).</li>
+            <li><strong>Regra de Interpretação dos Metabólitos:</strong>
+              <br>• <span class="badge b-purple">MMA Elevado (&gt;400 nmol/L) + Homocisteína Elevada</span> = <strong>Deficiência de Vitamina B12</strong>.
+              <br>• <span class="badge b-green">MMA Normal + Homocisteína Elevada (&gt;14–21 µmol/L)</span> = <strong>Deficiência Seletiva de Ácido Fólico</strong>.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card card-info">
+        <h3>🛡️ Confirmação Diagnóstica da Anemia Perniciosa (Gastrite Atrófica Autoimune Tipo A)</h3>
+        <div class="grid-3" style="margin-top: 4px;">
+          <div>
+            <strong>1. Autoanticorpos Específicos:</strong>
+            <p>• <strong>Anti-Fator Intrínseco (Anti-FI):</strong> Sensibilidade 50–70%, mas <strong>Especificidade &gt; 99%</strong> (sela o diagnóstico; colher antes ou ≥1 sem após injeção de B12).<br>
+            • <strong>Anti-Célula Parietal (Anti-CP):</strong> Sensibilidade ~90%, baixa especificidade (&lt;50%).</p>
+          </div>
+          <div>
+            <strong>2. Marcadores Indiretos da Mucosa:</strong>
+            <p>• <strong>Gastrina sérica de jejum:</strong> marcadamente elevada (hiperplasia reativa das células G antrais por acloridria).<br>
+            • <strong>Pepsinogênio I sérico:</strong> acentuadamente reduzido (atrofia de corpo e fundo).</p>
+          </div>
+          <div>
+            <strong>3. EDA com Biópsia (Mandatória):</strong>
+            <p>Confirma gastrite atrófica autoimune no corpo/fundo e realiza <strong>rastreamento oncológico obrigatório</strong> para tumores carcinoides gástricos (ECL) e adenocarcinoma gástrico.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 18: MÓDULO 4 - ANEMIA FERROPRIVA: ESTÁGIOS E TRATAMENTO ORAL -->
+    <section class="slide" data-module="4" data-title="4.1 Anemia Ferropriva: Estágios e Tratamento Oral em Adultos">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 4 · Tratamento e Acompanhamento na Prática Clínica</span>
+        <h2 class="slide-title">Estágios Evolutivos da Depleção de Ferro e Terapia Oral</h2>
+        <p class="slide-subtitle">Progressão bioquímica em 3 estágios, papel da hepcidina na posologia em dias alternados e sais disponíveis no Brasil.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card card-info">
+          <span class="badge b-cyan">Estágio 1</span>
+          <h3>Depleção dos Estoques</h3>
+          <p>Esgotamento progressivo do ferro mobilizável nos macrófagos da medula, fígado e baço. <strong>Queda precoce da Ferritina</strong> (&lt; 15–30 ng/mL no adulto; &lt; 12 mcg/L na criança). Hemograma, ferro sérico e morfologia mantêm-se normais.</p>
+        </div>
+        <div class="card card-warn">
+          <span class="badge b-amber">Estágio 2</span>
+          <h3>Deficiência Sem Anemia</h3>
+          <p>Eritropoese com restrição de ferro: o ferro sérico diminui, a CTLF/TIBC eleva-se, o <strong>IST cai para &lt; 16%</strong>, o sTfR eleva-se e surge discreta elevação do RDW. Hemoglobina ainda dentro da normalidade.</p>
+        </div>
+        <div class="card card-danger">
+          <span class="badge b-red">Estágio 3</span>
+          <h3>Anemia Ferropriva Franca</h3>
+          <p>Queda definitiva de Hb e Ht, acompanhada de <strong>microcitose (VCM &lt; 80 fL)</strong>, hipocromia (HCM &lt; 27 pg, CHCM &lt; 30 g/dL), RDW muito aumentado, <em>pencil cells</em> e <strong>trombocitose reativa</strong>.</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-accent">
+          <h3>💊 Posologia Oral e o Papel Central da Hepcidina</h3>
+          <ul>
+            <li><strong>Dose terapêutica:</strong> 60 a 200 mg/dia de <strong>ferro elementar</strong> (teto terapêutico: 200 mg/dia).</li>
+            <li><strong>Posologia Fracionada vs. Dias Alternados:</strong> Uma dose oral de ferro desencadeia aumento reflexo da <strong>hepcidina plasmática por 24 a 48 horas</strong>, que degrada a ferroportina nos enterócitos duodenais e bloqueia as doses seguintes. O uso em <strong>dose única matinal em dias alternados (ou 60 mg/dia em tomada única)</strong> previne o pico de hepcidina, otimiza a absorção e reduz efeitos adversos colônicos.</li>
+            <li><strong>Otimização:</strong> Ingerir 1h antes das refeições com <strong>Vitamina C</strong>. Respeitar intervalo ≥ 2h de leite/derivados (cálcio/caseína), chás escuros, café (taninos), fitatos e antiácidos/IBP.</li>
+          </ul>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Composto Oral</th>
+                <th>Ferro Elementar</th>
+                <th>Apresentação Líquida / Características</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Sulfato Ferroso</strong></td>
+                <td>40–60 mg/comp (~20%)</td>
+                <td>Gotas: 1 mL (20 gts) = 25 mg. Alta eficácia e baixo custo; mais efeitos GI.</td>
+              </tr>
+              <tr>
+                <td><strong>Fumarato / Gliconato</strong></td>
+                <td>Fum: ~33% | Glic: ~12%</td>
+                <td>Gliconato (~36 mg) tem menor irritação gástrica, mas requer 3 a 4 comp./dia.</td>
+              </tr>
+              <tr>
+                <td><strong>Ferripolimaltose</strong></td>
+                <td>100 mg/comp (não iônico)</td>
+                <td>Gotas: 1 mL (20 gts) = 50 mg. Complexo estável, menos efeitos GI, maior custo.</td>
+              </tr>
+              <tr>
+                <td><strong>Ferro Bisglicinato (Quelato)</strong></td>
+                <td>30–100 mg/comp</td>
+                <td>Flaconete 5 mL = 50 mg. Menor incidência de sintomas gástricos; custo elevado.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 19: MONITORAMENTO, FALHA TERAPÊUTICA E FERRO IV -->
+    <section class="slide" data-module="4" data-title="4.2 Resposta Hematológica, Falha Terapêutica e Ferro Intravenoso">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 4 · Monitoramento Clínico e Terapia Parenteral</span>
+        <h2 class="slide-title">Linha do Tempo de Resposta, Checklist de Falha e Ferro IV</h2>
+      </div>
+
+      <div class="grid-4">
+        <div class="card card-accent">
+          <span class="badge b-green">72 a 96 horas (3º–4º dia)</span>
+          <h3>Melhora Subjetiva</h3>
+          <p>Melhora da fadiga e disposição, com elevação inicial da eritropoese (~0,1 g/dL/dia de Hb).</p>
+        </div>
+        <div class="card card-accent">
+          <span class="badge b-cyan">5º ao 10º dia</span>
+          <h3>Pico Reticulocitário</h3>
+          <p>Ocorre a <strong>crise reticulocitária (5% a 10%)</strong>, indicador precoce mais confiável de resposta medular.</p>
+        </div>
+        <div class="card card-accent">
+          <span class="badge b-purple">3 a 4 semanas / 2 meses</span>
+          <h3>Subida e Normalização</h3>
+          <p>Hb sobe 1 a 2 g/dL em 3–4 semanas e normaliza em 2 meses (VCM leva 2 a 3 meses).</p>
+        </div>
+        <div class="card card-accent">
+          <span class="badge b-amber">+ 2 a 6 meses extras</span>
+          <h3>Reposição de Estoques</h3>
+          <p>Continuar após normalizar Hb até preencher depósitos: <strong>Ferritina &gt; 30–50 ng/mL</strong> (adulto) e &gt; 15–30 mcg/L (criança).</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-warn">
+          <h3>📋 Checklist de Falha Terapêutica (Hb sobe &lt; 1 g/dL em 30–45 dias)</h3>
+          <label class="check-item"><input type="checkbox"> <span><strong>1. Baixa adesão do paciente:</strong> causa mais frequente na prática (intolerância GI).</span></label>
+          <label class="check-item"><input type="checkbox"> <span><strong>2. Dose inadequada:</strong> prescrição baseada no sal total e não no ferro elementar.</span></label>
+          <label class="check-item"><input type="checkbox"> <span><strong>3. Diagnóstico incorreto:</strong> traço talassêmico, sideroblástica ou carência mista (B12/folato).</span></label>
+          <label class="check-item"><input type="checkbox"> <span><strong>4. Perda sanguínea contínua:</strong> sangramento superior à reposição (úlcera, angiodisplasia, neoplasia).</span></label>
+          <label class="check-item"><input type="checkbox"> <span><strong>5. Má absorção intestinal:</strong> Doença Celíaca, gastrite atrófica, <em>H. pylori</em>, cirurgia bariátrica/gastrectomia.</span></label>
+          <label class="check-item"><input type="checkbox"> <span><strong>6. Inflamação / IRIDA:</strong> bloqueio por hepcidina (DRC/neoplasia) ou mutação genética <em>TMPRSS6</em>.</span></label>
+        </div>
+
+        <div class="card card-info">
+          <h3>💉 Ferro Intravenoso (IV) e Fórmula de Ganzoni</h3>
+          <p><strong>Indicações Formais:</strong> Intolerância digestiva intratável, má absorção (celíaca, bariátrica, IRIDA), necessidade de reposição rápida (3º trimestre gestacional, pré-operatório iminente), DII ativa, DRC em uso de AEE, <strong>IC sistólica com fração de ejeção reduzida</strong> e sangramento maciço contínuo.</p>
+          <div class="formula-box">
+            Ferro Total (mg) = [Hb desejada − Hb atual] × Peso (kg) × 2,4 + 500 mg
+          </div>
+          <ul>
+            <li><strong>Sacarato de Hidróxido Férrico (Noripurum®):</strong> máx. 100–200 mg/sessão, 2–3x/semana em SF 0,9%.</li>
+            <li><strong>Carboximaltose Férrica / Derisomaltose:</strong> alta estabilidade; permitem infusão rápida de <strong>1.000 a 1.500 mg em sessão única</strong> (Derisomaltose cursa com menor incidência de hipofosfatemia). <em>Atenção SBP 2026: formulações de dose única alta não são recomendadas em pediatria.</em></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 20: PEDIATRIA SBP 2026 E PNSF -->
+    <section class="slide" data-module="4" data-title="4.3 Anemia Ferropriva na Pediatria (Diretrizes SBP 2026 e PNSF)">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 4 · Pediatria: Prevenção, Nutrição e Tratamento</span>
+        <h2 class="slide-title">Diretrizes Pediátricas SBP 2026, Clampeamento e Profilaxia (PNSF)</h2>
+        <p class="slide-subtitle">Biodisponibilidade alimentar, efeito deletério do leite de vaca antes dos 12 meses e esquemas profiláticos.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card card-success">
+          <h3>🤱 Leite Materno e Ferro Heme</h3>
+          <ul>
+            <li><strong>Ferro Heme (carnes/vísceras):</strong> absorção de 20–30%, sem interferência de fitatos.</li>
+            <li><strong>Ferro Não Heme (vegetais):</strong> absorção de 2–5% (exige redução Fe³⁺ → Fe²⁺ pela DCYTB e presença de Vitamina C).</li>
+            <li><strong>Leite Materno:</strong> baixo teor (0,3–0,5 mg/L), mas <strong>biodisponibilidade de até 50%</strong>, suprindo o RNT até o 6º mês.</li>
+          </ul>
+        </div>
+
+        <div class="card card-danger">
+          <h3>🥛 Efeito do Leite de Vaca (&lt; 12m)</h3>
+          <p>O leite de vaca não fortificado é contraindicado antes dos 12 meses:</p>
+          <ul>
+            <li>Baixo teor de ferro e absorção pífia.</li>
+            <li>Contém três inibidores potentes: <strong>excesso de cálcio, caseína e proteínas do soro</strong>.</li>
+            <li>Lesa as junções celulares dos enterócitos, induzindo enteropatia inflamatória com <strong>microssangramentos intestinais</strong>.</li>
+          </ul>
+        </div>
+
+        <div class="card card-info">
+          <h3>⏱️ Clampeamento e Dose Terapêutica</h3>
+          <ul>
+            <li><strong>Clampeamento oportuno (1 a 3 min):</strong> transfere 80 a 100 mL de sangue, suprindo ferro por <strong>3 a 3,5 meses adicionais</strong>.</li>
+            <li><strong>Dose Terapêutica Pediátrica:</strong> <strong>3 a 6 mg/kg/dia</strong> de ferro elementar VO por 3 a 6 meses (mínimo 8 sem) até Ferritina &gt; 15–30 mcg/L. (Desnutrição grave: iniciar com 3 mg/kg/dia).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Grupo Clínico / População Pediátrica</th>
+              <th>Início da Profilaxia</th>
+              <th>Dose Diária e Esquema Posológico</th>
+              <th>Duração do Tratamento Profilático</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>RNT peso adequado (&gt; 2.500 g) SEM fatores de risco</strong><br><span class="badge b-green">PNSF / SBP 2026</span></td>
+              <td>Aos 6 meses de vida</td>
+              <td><strong>10 a 12,5 mg/dia</strong> de ferro elementar (dose fixa diária independente do peso)</td>
+              <td><strong>2 ciclos de 3 meses:</strong> Ciclo 1 (6 aos 9m) → Pausa de 3 meses (9 aos 12m) → Ciclo 2 (12 aos 15m).</td>
+            </tr>
+            <tr>
+              <td><strong>RNT peso adequado (&gt; 2.500 g) — Esquema Contínuo</strong><br><span class="badge b-cyan">Consenso SBP Clássico</span></td>
+              <td>Aos 6 meses de vida</td>
+              <td><strong>1 mg/kg/dia</strong> de ferro elementar</td>
+              <td>Diário e ininterrupto dos 6 aos 24 meses de vida.</td>
+            </tr>
+            <tr>
+              <td><strong>Prematuro ou Baixo Peso (1.500 a 2.500 g)</strong></td>
+              <td>Aos 30 dias de vida</td>
+              <td><strong>2 mg/kg/dia</strong> no 1º ano</td>
+              <td>Durante todo o 1º ano. Dos 12 aos 24 meses: <strong>1 mg/kg/dia</strong> contínuo.</td>
+            </tr>
+            <tr>
+              <td><strong>Prematuro Muito Baixo Peso (1.000 a 1.499 g)</strong></td>
+              <td>Aos 30 dias de vida</td>
+              <td><strong>3 mg/kg/dia</strong> no 1º ano</td>
+              <td>Durante todo o 1º ano. Dos 12 aos 24 meses: <strong>1 mg/kg/dia</strong> contínuo.</td>
+            </tr>
+            <tr>
+              <td><strong>Prematuro Extremo Baixo Peso (&lt; 1.000 g)</strong></td>
+              <td>Aos 30 dias de vida</td>
+              <td><strong>4 mg/kg/dia</strong> no 1º ano</td>
+              <td>Durante todo o 1º ano. Dos 12 aos 24 meses: <strong>1 mg/kg/dia</strong> contínuo.</td>
+            </tr>
+            <tr>
+              <td><strong>Crianças em uso de leite de vaca integral</strong></td>
+              <td>Aos 4 meses de vida</td>
+              <td>Antecipar profilaxia medicamentosa conforme avaliação clínica</td>
+              <td>Até correção alimentar completa.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SLIDE 21: TRATAMENTO DAS ANEMIAS MEGALOBLÁSTICAS -->
+    <section class="slide" data-module="4" data-title="4.4 Tratamento das Anemias Megaloblásticas (B12 e Ácido Fólico)">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 4 · Reposição Vitamínica e Segurança Neurológica</span>
+        <h2 class="slide-title">Esquemas Terapêuticos de Vitamina B12 e Ácido Fólico</h2>
+        <p class="slide-subtitle">Terapia intramuscular clássica, terapia oral em altas doses e o alerta de segurança contra lesão medular irreversível.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-accent">
+          <h3>💉 Vitamina B12: Via Intramuscular (IM) vs. Oral em Alta Dose</h3>
+          <ul>
+            <li><strong>Terapia Parenteral IM Clássica (1.000 mcg de Ciano ou Hidroxocobalamina):</strong>
+              <br>• <em>1ª semana:</em> 1.000 mcg/dia IM por 7 dias (ou dias alternados por 2 sem).
+              <br>• <em>2ª semana:</em> 1.000 mcg IM, 2x/semana.
+              <br>• <em>3ª e 4ª semanas:</em> 1.000 mcg IM, 1x/semana (ou 1.000 mcg/sem por 8 semanas).
+              <br>• <em>Manutenção:</em> Mensal (cianocobalamina) ou a cada 2–3 meses (hidroxocobalamina). <strong>Por toda a vida</strong> na anemia perniciosa, gastrectomia total ou ressecção ileal.
+              <br>• <em>Comprometimento neurológico prévio:</em> manter 1.000 mcg 2x/semana pelos primeiros 6 meses.
+            </li>
+            <li><strong>Terapia Oral em Altas Doses (1.000 a 2.000 mcg/dia VO contínuo):</strong> 0,5% a 2% de uma dose maciça oral é absorvida passivamente por <strong>difusão facilitada simples</strong> independente de Fator Intrínseco ou íleo, assegurando 20 a 40 mcg livres/dia com eficácia igual à via IM.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>⏱️ Monitoramento da Resposta e Reposição de Folato</h3>
+          <ul>
+            <li><strong>Primeiras 24–48 horas:</strong> rápida melhora subjetiva do apetite e bem-estar; queda do MMA.</li>
+            <li><strong>3º ao 5º dia:</strong> elevação dos reticulócitos periféricos (<strong>pico entre o 7º e 10º dia</strong>).</li>
+            <li><strong>10 a 14 dias:</strong> resolução da leucopenia e da trombocitopenia.</li>
+            <li><strong>4 a 8 semanas:</strong> normalização completa da Hb e regressão da macrocitose (falha na subida com queda do VCM aponta <strong>deficiência oculta de ferro</strong> desmascarada pelo consumo medular).</li>
+            <li><strong>Reposição de Ácido Fólico:</strong> <strong>1 a 5 mg/dia VO</strong> por 4 meses. Manter contínuo (5 mg/sem ou 1 mg/dia) em anemias hemolíticas crônicas (falciforme, talassemias), hemodiálise, má absorção e alcoolismo ativo.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card card-danger">
+        <h3>🚨 REGRA DE OURO E ALERTA DE SEGURANÇA OBRIGATÓRIO</h3>
+        <p style="font-size: 0.92rem;">
+          <strong>NUNCA administrar ácido fólico isolado</strong> em uma anemia megaloblástica sem antes confirmar a normalidade absoluta da Vitamina B12 (ou sem associar reposição imediata de B12). Doses farmacológicas de folato (≥ 1 mg/dia) superam o bloqueio metabólico tímico e corrigem o hemograma (<em>"anemia perniciosa mascarada"</em>), mas permitem que a desmielinização axonal progrida silenciosamente para <strong>Degeneração Combinada Subaguda da Medula Espinal irreversível</strong> (ataxia motora definitiva, perda sensitiva proprioceptiva e paresias graves).
+        </p>
+      </div>
+    </section>
+
+    <!-- SLIDE 22: DOENÇA CRÔNICA, DRC, GESTANTES E IDOSOS -->
+    <section class="slide" data-module="4" data-title="4.5 Doença Crônica, DRC e Populações Especiais (Gestantes e Idosos)">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 4 · Manejo Sistêmico e Populações Especiais</span>
+        <h2 class="slide-title">Anemia da Inflamação, DRC, Gestantes e Regra dos 3 Terços no Idoso</h2>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-accent">
+          <h3>🔥 Anemia da Inflamação e Doença Renal Crônica (DRC)</h3>
+          <ul>
+            <li><strong>Fisiopatologia:</strong> (1) <strong>Eixo IL-6 / JAK-STAT3 → Hepcidina</strong> degrada a ferroportina nos enterócitos e macrófagos (aprisiona ferro); (2) <strong>TNF-α, IL-1β e IFN-γ</strong> inibem a síntese renal de EPO e suprimem o fator eritroide <em>GATA1</em>; (3) Eritrofagocitose acelerada (meia-vida cai para 60–90 dias). Na DRC, domina a perda peritubular renal de EPO (TFGe &lt; 45 mL/min).</li>
+            <li><strong>Conduta:</strong> Tratar doença de base + <strong>Ferro Intravenoso</strong> (contorna o bloqueio intestinal da hepcidina):
+              <br>• <em>Inflamação geral:</em> indicar se Ferritina &lt; 100 ng/mL (ou entre 100 e 300 ng/mL com IST &lt; 20%).
+              <br>• <em>Na DRC:</em> suplementar Ferro IV sempre que <strong>IST &lt; 30% ou Ferritina &lt; 500 ng/mL</strong>.
+            </li>
+            <li><strong>Agentes Estimuladores da Eritropoese (AEE — Alfaepoetina, Alfadarbepoetina, Roxadustate):</strong> iniciar na DRC apenas quando Hb &lt; 9 a 10 g/dL. <strong>Meta estrita: manter Hb entre 9 e 11 g/dL</strong> (jamais buscar valores normais &gt; 12–13 g/dL pelo alto risco de mortalidade, AVE, hipertensão acelerada e trombose de fístula!).</li>
+          </ul>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div class="card card-info">
+            <h3>🤰 Gestantes: Fisiológica vs. Patológica</h3>
+            <p>A expansão plasmática (40–50% entre a 16ª e 24ª semanas) supera a expansão eritrocitária (15–25%). Cada gestação a termo consome ~800 mg de ferro materno e duplica a demanda de folato.</p>
+            <p><strong>Limites OMS 2024 / SBP 2026:</strong> 1º Tri ≥ 11,0 g/dL | <strong>2º Tri ≥ 10,5 g/dL</strong> | 3º Tri ≥ 11,0 g/dL. Valores abaixo desses limites ou VCM alterado (&lt; 80 ou &gt; 100 fL) configuram <strong>anemia patológica</strong>.</p>
+          </div>
+
+          <div class="card card-warn">
+            <h3>👴 Idosos: A "Regra dos Três Terços" e Suspeita de SMD</h3>
+            <ul>
+              <li><strong>1/3 Carências Nutricionais:</strong> Ferro (sangramento GI crônico por AINE/AAS, angiodisplasia, pólipos ou neoplasia colorretal) e Vitamina B12 (gastrite atrófica, IBP, metformina).</li>
+              <li><strong>1/3 Doença Inflamatória / DRC:</strong> Anemia da inflamação (2 a 3x mais comum que DRC isolada) + declínio senil da TFGe.</li>
+              <li><strong>1/3 Anemia Inexplicada do Idoso:</strong> Normocítica leve mediada por citocinas senescentes. <strong>Suspeitar de Mielodisplasia (SMD)</strong> se houver macrocitose com B12/folato normais, citopenias adicionais ou neutrófilos hipogranulares / <em>pseudo-Pelger-Huët</em>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 23: MÓDULO 5 - SÍNDROMES TALASSÊMICAS -->
+    <section class="slide" data-module="5" data-title="5.1 Síndromes Talassêmicas: Alfatalassemias e Betatalassemias">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 5 · Anemias Especializadas e Hemoglobinopatias</span>
+        <h2 class="slide-title">Espectro Clínico e Genético das Talassemias (α e β)</h2>
+        <p class="slide-subtitle">Desbalanço estequiométrico das cadeias de globina com formação de tetrâmeros instáveis, eritropoese ineficaz e hemólise.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-accent">
+          <span class="badge b-cyan" style="width:fit-content;">Cromossomo 16 · 4 Genes (αα/αα)</span>
+          <h3>Alfatalassemias (Espectro por Deleção Gênica)</h3>
+          <ul>
+            <li><strong>1 gene deletado (-α/αα) — Portador Silencioso:</strong> Assintomático, índices hematimétricos e esfregaço normais.</li>
+            <li><strong>2 genes deletados (-α/-α ou --/αα) — Traço Alfa-talassêmico:</strong> Anemia microcítica e hipocrômica leve, RBC &gt; 5,0–5,5 milhões/µL, RDW normal e <strong>HbA₂ normal/baixa</strong>. Confirmação por PCR molecular.</li>
+            <li><strong>3 genes deletados (--/-α) — Doença da Hemoglobina H (β₄):</strong> Excesso de cadeias β forma tetrâmeros β₄ (HbH de 1% a 40% no HPLC). Anemia hemolítica moderada/grave (Hb 7–10 g/dL), esplenomegalia e inclusões patognomônicas em <strong>"bola de golfe"</strong> (azul de cresil brilhante).</li>
+            <li><strong>4 genes deletados (--/--) — Hidropisia Fetal por Hb Bart (γ₄):</strong> Altíssima afinidade por O₂ → asfixia tecidual fetal extrema, anasarca, ICC de alto débito e óbito intrauterino/neonatal.</li>
+          </ul>
+        </div>
+
+        <div class="card card-accent">
+          <span class="badge b-amber" style="width:fit-content;">Cromossomo 11 · 2 Genes (β/β)</span>
+          <h3>Betatalassemias (Mutações no Gene HBB: β⁺ ou β⁰)</h3>
+          <p>Manifestam-se a partir do final do 1º semestre de vida (com o declínio fisiológico da HbF):</p>
+          <ul>
+            <li><strong>Betatalassemia Menor (β/β⁺ ou β/β⁰):</strong> Assintomática ou anemia discreta, microcitose acentuada (VCM &lt; 75 fL), RBC ↑, RDW normal. Confirmação: <strong>HbA₂ &gt; 3,5%</strong> (geralmente &gt; 4%) no HPLC.</li>
+            <li><strong>Betatalassemia Intermédia (β⁺/β⁺):</strong> Hb 7–10 g/dL sem dependência transfusional regular, mas com grave <strong>sobrecarga intestinal de ferro</strong> (a eritropoese ineficaz hiperexpressa <em>eritroferrona e GDF15</em>, suprimindo a hepcidina!).</li>
+            <li><strong>Betatalassemia Maior / Anemia de Cooley (β⁰/β⁰):</strong> Anemia grave nos primeiros meses (Hb &lt; 5–7 g/dL, HbF &gt; 50–90%), fácies talassêmica (bossa frontal), hepatoesplenomegalia maciça. Exige <strong>hipertransfusão regular</strong> (manter Hb pré 9,0–10,5 g/dL) + <strong>quelação de ferro</strong> (Deferasirox, Deferiprona ou Desferroxamina se Ferritina &gt; 1.000 µg/L; RM T2* cardíaco) + Luspatercepte / TCTH alogênico.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card card-info" style="padding: 12px 18px;">
+        <p><strong>💡 Conduta na APS vs. Especializada:</strong> Na APS, reconhecer o traço talassêmico, <strong>evitar ferroterapia empírica sem ferritina baixa</strong> (risco de sobrecarga iatrogênica), prescrever <strong>ácido fólico (1–5 mg/dia VO)</strong> e realizar <strong>aconselhamento genético</strong> do casal (se ambos portadores de traço β, há 25% de risco de filho com Talassemia Maior).</p>
+      </div>
+    </section>
+
+    <!-- SLIDE 24: DOENÇA FALCIFORME: FISIOPATOLOGIA E GENÓTIPOS -->
+    <section class="slide" data-module="5" data-title="5.2 Doença Falciforme: Fisiopatologia e Genótipos">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 5 · Doença Falciforme (Mutação Glu6Val no Gene HBB)</span>
+        <h2 class="slide-title">Fisiopatologia da Falcização e Perfil Diagnóstico dos Genótipos</h2>
+        <p class="slide-subtitle">Transversão pontual GAG → GTG no códon 6 do cromossomo 11 substitui o ácido glutâmico pela valina na cadeia β.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card card-danger">
+          <h3>1. Polimerização da Desoxi-HbS</h3>
+          <p>Sob desoxigenação, acidose, febre ou desidratação, o resíduo hidrofóbico de valina β6 liga-se a tetrâmeros vizinhos, polimerizando-se em feixes helicoidais rígidos que deformam a hemácia em foice.</p>
+        </div>
+        <div class="card card-warn">
+          <h3>2. Vasoclusão e Canal de Gardos</h3>
+          <p>Ciclos repetidos lesam a membrana, exaurem bombas com desidratação pelo canal de Gardos, expõem fosfatidilserina pró-coagulante e ativam adesão endotelial (VCAM-1, ICAM-1, selectinas) → <strong>infarto tecidual</strong>.</p>
+        </div>
+        <div class="card card-info">
+          <h3>3. Esgotamento do Óxido Nítrico (NO)</h3>
+          <p>A hemólise intravascular libera Hb livre (que consome avidamente o NO) e arginase (que destrói a L-arginina), gerando vasoconstrição paroxística, ativação plaquetária e vasculopatia endotelial.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Genótipo</th>
+              <th>Base Genética</th>
+              <th>Gravidade Clínica</th>
+              <th>Hb Basal</th>
+              <th>Perfil no HPLC / Eletroforese</th>
+              <th>Morfologia no Sangue Periférico</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Anemia Falciforme (HbSS)</strong></td>
+              <td>Homozigose (βˢ/βˢ)</td>
+              <td><span class="badge b-red">Mais frequente e grave</span></td>
+              <td>6 a 9 g/dL</td>
+              <td><strong>HbS &gt; 85%</strong>, HbF 2–15%, HbA2 2–3%, <strong>HbA = 0%</strong></td>
+              <td>Drepanócitos típicos irreversíveis, policromasia, corpúsculos de Howell-Jolly.</td>
+            </tr>
+            <tr>
+              <td><strong>Doença HbSC</strong></td>
+              <td>Heterozigose composta (βˢ/βᶜ)</td>
+              <td><span class="badge b-amber">Moderada</span> (alto risco de <strong>retinopatia</strong> e osteonecrose)</td>
+              <td>9 a 12 g/dL</td>
+              <td><strong>HbS ≈ 50%, HbC ≈ 50%</strong>, HbA = 0%</td>
+              <td>Células em alvo abundantes, hemácias em formato de barco e cristais de HbC.</td>
+            </tr>
+            <tr>
+              <td><strong>HbS-β⁰ Talassemia</strong></td>
+              <td>Composta (βˢ/β⁰ nulo)</td>
+              <td><span class="badge b-red">Severa</span> (idêntica ao HbSS)</td>
+              <td>6 a 9 g/dL</td>
+              <td>HbS &gt; 80%, <strong>HbA2 elevada (4–6%)</strong>, <strong>HbA = 0%</strong></td>
+              <td>Drepanócitos + <strong>microcitose acentuada (VCM &lt; 70 fL)</strong> e hipocromia intensa.</td>
+            </tr>
+            <tr>
+              <td><strong>HbS-β⁺ Talassemia</strong></td>
+              <td>Composta (βˢ/β⁺ residual)</td>
+              <td><span class="badge b-cyan">Mais branda</span> (depende da taxa de HbA)</td>
+              <td>9 a 12 g/dL</td>
+              <td>HbS 60–80%, <strong>HbA presente (5–30%)</strong>, HbA2 &gt; 3,5%</td>
+              <td>Microcitose e hipocromia marcadas, com drepanócitos ocasionais.</td>
+            </tr>
+            <tr>
+              <td><strong>Traço Falciforme (HbAS)</strong></td>
+              <td>Heterozigoto simples (βᴬ/βˢ)</td>
+              <td><span class="badge b-green">Carreador benigno</span> (assintomático)</td>
+              <td>Normal (&gt;12–13)</td>
+              <td><strong>HbA 55–60% &gt; HbS 35–40%</strong></td>
+              <td>Esfregaço estritamente normal; sem hemólise ou drepanócitos espontâneos.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SLIDE 25: EMERGÊNCIAS FALCIFORMES E SEGUIMENTO AMBULATORIAL -->
+    <section class="slide" data-module="5" data-title="5.3 Emergências Falciformes e Acompanhamento Ambulatorial">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 5 · Manejo Agudo e Crônico da Doença Falciforme</span>
+        <h2 class="slide-title">Conduta nas 5 Emergências Falciformes e os 4 Pilares Ambulatoriais</h2>
+      </div>
+
+      <div class="grid-3">
+        <div class="card card-danger">
+          <h3>1. Crise Álgica e 2. Síndrome Torácica Aguda (STA)</h3>
+          <ul>
+            <li><strong>Crise Vaso-Oclusiva (Dactilite em lactentes / dor óssea):</strong> Analgesia IV escalonada na 1ª hora (morfina/opioides + analgésicos/AINE se função renal normal), hidratação sem hiper-hidratação, aquecimento e controle de infecções.</li>
+            <li><strong>STA (Principal causa de óbito hospitalar!):</strong> Infiltrado alveolar novo na radiografia + febre (&gt;38,5 °C), dor torácica, taquipneia ou queda da SatO₂ &gt; 3%. <strong>Conduta:</strong> O₂ (Sat ≥ 95%), <strong>Cefalosporina 3ª ger. + Macrolídeo IV</strong>, hidratação conservadora e <strong>transfusão simples ou exsanguinotransfusão</strong> se hipóxia progressiva.</li>
+          </ul>
+        </div>
+
+        <div class="card card-warn">
+          <h3>3. Sequestro Esplênico, 4. AVE e 5. Priapismo</h3>
+          <ul>
+            <li><strong>Sequestro Esplênico (&lt; 5 anos):</strong> Aumento súbito do baço + queda de Hb &gt; 2–3 g/dL + reticulocitose + choque hipovolêmico. <strong>Conduta:</strong> Cristaloide + transfusão cautelosa (5–10 mL/kg até Hb 7–8 g/dL; <em>evitar hipertransfusão pelo risco de hiperviscosidade pós-desrepresamento!</em>).</li>
+            <li><strong>AVE Isquêmico Agudo:</strong> TC sem contraste imediata + <strong>Exsanguinotransfusão de urgência</strong> (reduzir <strong>HbS &lt; 30%</strong> e Hb ~10 g/dL).</li>
+            <li><strong>Priapismo (&gt; 1–2h):</strong> Hidratação, analgesia, etilefrina oral; se não reverter em 1–2h → aspiração cavernosa + irrigação alfa-adrenérgica.</li>
+          </ul>
+        </div>
+
+        <div class="card card-success">
+          <h3>🛡️ Os 4 Pilares do Seguimento Longitudinal</h3>
+          <ol>
+            <li><strong>Profilaxia Infecciosa (Asplenia funcional):</strong> <strong>Penicilina V oral contínua</strong> antes dos 2 meses até os 5 anos + vacinas Pneumo (VPC13/VPP23), Meningo (ACWY/B), <em>Haemophilus</em> e Influenza.</li>
+            <li><strong>Doppler Transcraniano (DTC) Anual:</strong> Dos <strong>2 aos 16 anos</strong> (HbSS e HbS/β⁰). Se <strong>TAMMV ≥ 200 cm/s</strong> → transfusão crônica (reduz AVE primário em 91%).</li>
+            <li><strong>Hidroxiureia (15 a 35 mg/kg/dia):</strong> Induz HbF e libera NO. Recomendada universalmente a partir dos <strong>9–12 meses</strong> (HbSS/Sβ⁰) e em adultos com ≥3 crises/ano ou STA prévia.</li>
+            <li><strong>Rotinas:</strong> Ácido fólico (1 mg/dia), microalbuminúria (IECA/BRA se proteinúria), fundoscopia anual (≥10 anos) e Eco (VRT).</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 26: RESUMO DAS ANEMIAS HEMOLÍTICAS E INSUFICIÊNCIAS MEDULARES -->
+    <section class="slide" data-module="5" data-title="5.4 Resumo das Principais Anemias Hemolíticas e Insuficiências Medulares">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 5 · Quadro Sinóptico de Bolso</span>
+        <h2 class="slide-title">Anemias Hemolíticas Específicas e Falências Medulares</h2>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Doença Hematológica</th>
+              <th>Fisiopatologia Central</th>
+              <th>Marcadores Clínicos e Laboratoriais Chave</th>
+              <th>Conduta Inicial e Princípios Terapêuticos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>AHAI por Anticorpos Quentes</strong></td>
+              <td>Autoanticorpos <strong>IgG (a 37 °C)</strong> com hemólise extravascular esplênica (receptores Fcγ).</td>
+              <td><strong>TAD + para IgG (ou IgG + C3d)</strong>; microesferócitos (30–40%) e esplenomegalia.</td>
+              <td><strong>1ª Linha: Prednisona 1–1,5 mg/kg/dia</strong> + ácido fólico. 2ª Linha: Rituximabe ou esplenectomia. Transfusão "menos incompatível" se instável.</td>
+            </tr>
+            <tr>
+              <td><strong>Síndrome da Crioaglutinina (AHAI Fria)</strong></td>
+              <td>Autoanticorpos <strong>IgM (&lt; 30 °C)</strong> ativam complemento com hemólise hepática.</td>
+              <td>Acrocianose no frio; <strong>TAD + exclusivo para C3d</strong> (IgG neg); aglutinação na lâmina.</td>
+              <td>Proteção térmica rigorosa; transfusão aquecida a 37 °C; <strong>Rituximabe ± bendamustina ou Sutimlimab (anti-C1s)</strong>. Corticoide/esplenectomia são ineficazes!</td>
+            </tr>
+            <tr>
+              <td><strong>Esferocitose Hereditária</strong></td>
+              <td>Defeito vertical de membrana (anquirina, espectrina, banda 3).</td>
+              <td>Anemia + icterícia + esplenomegalia + colelitíase; <strong>CHCM elevado (34,5–38 g/dL)</strong>; Teste <strong>EMA reduzido</strong> e fragilidade osmótica +.</td>
+              <td>Ácido fólico diário, USG biliar, vigiar crise aplásica por Parvovírus B19; <strong>Esplenectomia</strong> nos graves/moderados (após 5–6 anos com vacinação prévia).</td>
+            </tr>
+            <tr>
+              <td><strong>Deficiência de G6PD</strong></td>
+              <td>Ligada ao X; déficit de NADPH na via das pentoses → lesão oxidativa.</td>
+              <td>Crise hemolítica 24–48h após fava, infecção, dapsona, sulfa, primaquina, nitrofurantoína. <strong>Bite/blister cells e corpúsculos de Heinz</strong>.</td>
+              <td>Suspender agente oxidante + hidratação vigorosa. <em>Cuidado: dosar G6PD fora da crise aguda (reticulócitos dão falso-normal!).</em></td>
+            </tr>
+            <tr>
+              <td><strong>Microangiopatias (PTT e SHU)</strong></td>
+              <td>PTT: deficiência de <strong>ADAMTS13 (&lt;10%)</strong>.<br>SHU: toxina Shiga ou complemento.</td>
+              <td>Anemia hemolítica + plaquetopenia grave + <strong>Esquizócitos (&gt;1–2%)</strong> + coagulograma normal (PTT: sintomas neuro; SHU: IRA grave).</td>
+              <td><strong>PTT: Plasmaférese de urgência + corticoide</strong>. SHU atípica: Eculizumabe. <strong>PROIBIDO transfundir plaquetas</strong> (precipita trombose fatal!).</td>
+            </tr>
+            <tr>
+              <td><strong>HPN (Hemoglobinúria Paroxística Noturna)</strong></td>
+              <td>Mutação somática adquirida no gene <strong>PIG-A</strong> → falta de âncora GPI (CD55/CD59).</td>
+              <td>Hemólise intravascular (TAD neg) + <strong>hemossiderinúria/ferropenia</strong> + <strong>trombose abdominal (Budd-Chiari)</strong>. Citometria: falta de CD55/CD59/FLAER.</td>
+              <td><strong>Eculizumabe / Ravulizumabe (anti-C5)</strong> ou Pegcetacoplan (anti-C3) + vacinação antimeningocócica obrigatória + anticoagulação se trombose.</td>
+            </tr>
+            <tr>
+              <td><strong>Anemia Aplásica (AA) e Aplasia Eritroide Pura (PRCA)</strong></td>
+              <td>AA: destruição imune global (T autorreativos).<br>PRCA: ataque isolado a eritroblastos.</td>
+              <td><strong>AA:</strong> Pancitopenia + <strong>medula hipocelular (&lt;25%) gordurosa</strong> sem esplenomegalia (Camitta grave: N&lt;500, Plaq&lt;20k, Ret&lt;20k).<br><strong>PRCA:</strong> Anemia isolada + Ret &lt; 0,1% (Parvovírus B19, Timoma).</td>
+              <td><strong>AA &lt; 40 anos: TMO alogênico</strong>; &gt; 40 anos: Globulina Antitimócito (ATG) + Ciclosporina + Eltrombopague.<br><strong>PRCA:</strong> IgIV (se B19+), TC de tórax (timectomia se timoma).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SLIDE 27: CHECKLIST DE ENCAMINHAMENTO AO HEMATOLOGISTA -->
+    <section class="slide" data-module="5" data-title="5.5 Checklist Objetivo: Quando Encaminhar ao Hematologista">
+      <div class="slide-header">
+        <span class="slide-tag">Módulo 5 · Tomada de Decisão na Atenção Primária e Pronto-Socorro</span>
+        <h2 class="slide-title">Checklist Objetivo: Emergência Hospitalar vs. Ambulatório de Hematologia</h2>
+        <p class="slide-subtitle">Clique nos itens para marcar os critérios de decisão rápida na prática médica.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-danger">
+          <h3>🚑 A) Urgências Hematológicas (Remoção Imediata / Internação)</h3>
+          <label class="check-item">
+            <input type="checkbox">
+            <span><strong>Suspeita de PTT ou SHU:</strong> Anemia hemolítica microangiopática com <strong>esquizócitos + plaquetopenia</strong> de início recente e sintomas neurológicos/renais (não aguardar ADAMTS13 e <strong>não transfundir plaquetas</strong>).</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox">
+            <span><strong>Insuficiência Medular com Complicações Críticas:</strong> Pancitopenia com <strong>neutropenia febril</strong> (Neutrófilos &lt; 500/µL + Tax ≥ 38 °C) ou sangramento ativo com plaquetopenia crítica (&lt; 10.000–20.000/µL).</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox">
+            <span><strong>Emergências Clínicas da Doença Falciforme:</strong> Febre ≥ 38 °C (risco de sepse pneumocócica fulminante), Síndrome Torácica Aguda, AVE agudo, Sequestro Esplênico agudo ou Priapismo &gt; 1 hora.</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox">
+            <span><strong>Anemia Hemolítica Hiperaguda Descompensada:</strong> Crise hemolítica maciça com colapso hemodinâmico, hemoglobinúria franca ("urina cor de coca-cola") e taquicardia em repouso.</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox">
+            <span><strong>Suspeita de Neoplasias Hematológicas Agudas:</strong> Presença de <strong>blastos leucêmicos</strong> no sangue periférico, leucocitose extrema com citopenias ou síndrome de lise tumoral.</span>
+          </label>
+        </div>
+
+        <div class="card card-info">
+          <h3>🏥 B) Encaminhamento Ambulatorial Eletivo (APS → Hematologia)</h3>
+          <label class="check-item">
+            <input type="checkbox">
+            <span><strong>Pancitopenia ou Bicitopenia Persistente:</strong> Confirmada em hemogramas seriados após exclusão laboratorial de carências de B12 e folato, hepatopatia crônica e fármacos depressores.</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox">
+            <span><strong>Hemoglobinopatias Estruturais e Talassemias Graves:</strong> Doença Falciforme (HbSS, HbSC, HbS-β), Betatalassemia Maior/Intermédia, Doença da HbH e casais com traço β em planejamento reprodutivo.</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox">
+            <span><strong>Anemia Ferropriva Refratária Inexplicada:</strong> Falha terapêutica ao ferro oral após descarte criterioso de má adesão, sangramento digestivo e má absorção (suspeita de IRIDA).</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox">
+            <span><strong>Microcitose não Esclarecida com Ferro Normal:</strong> Eletroforese inconclusiva ou sem aumento de HbA₂ (suspeita de alfatalassemia menor exigindo biologia molecular, sideroblástica congênita ou Hb instável).</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox">
+            <span><strong>Anemias Macrocíticas não Megaloblásticas e Suspeita de SMD no Idoso:</strong> Macrocitose progressiva (&gt;100–115 fL) associada a citopenias ou displasia ao esfregaço com B12/folato normais.</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox">
+            <span><strong>AHAI (TAD +), Suspeita de HPN ou Esplenomegalia/Linfonodomegalia:</strong> Manejo de 2ª linha, citometria de fluxo com FLAER ou investigação de linfomas, leucemias crônicas e mielofibrose.</span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Rodapé com Controles e Progresso -->
+  <footer class="bottombar">
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div style="font-size: 0.78rem; color: var(--text-muted);" id="footerModuleLabel">
+      Módulo 1: Fundamentos, Semiologia e Leitura do Hemograma
+    </div>
+
+    <div class="nav-controls">
+      <button class="btn-icon" onclick="prevSlide()" title="Slide Anterior (Seta Esquerda)">← Anterior</button>
+      <span class="slide-counter" id="slideCounter">01 / 27</span>
+      <button class="btn-icon" onclick="nextSlide()" title="Próximo Slide (Seta Direita ou Espaço)">Próximo →</button>
+    </div>
+  </footer>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const modPills = Array.from(document.querySelectorAll('.mod-pill'));
+    const progressFill = document.getElementById('progressFill');
+    const slideCounter = document.getElementById('slideCounter');
+    const footerModuleLabel = document.getElementById('footerModuleLabel');
+    const drawer = document.getElementById('drawer');
+    const drawerBackdrop = document.getElementById('drawerBackdrop');
+    const drawerList = document.getElementById('drawerList');
+    const themeBtn = document.getElementById('themeBtn');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+
+    let currentIndex = 0;
+
+    const moduleThemes = {
+      1: {
+        primary: 'var(--mod1-primary)',
+        secondary: 'var(--mod1-secondary)',
+        glow: 'var(--mod1-glow)',
+        name: 'Módulo 1: Fundamentos, Semiologia e Leitura do Hemograma'
+      },
+      2: {
+        primary: 'var(--mod2-primary)',
+        secondary: 'var(--mod2-secondary)',
+        glow: 'var(--mod2-glow)',
+        name: 'Módulo 2: Classificação Morfológica e Cinética das Anemias'
+      },
+      3: {
+        primary: 'var(--mod3-primary)',
+        secondary: 'var(--mod3-secondary)',
+        glow: 'var(--mod3-glow)',
+        name: 'Módulo 3: Investigação Laboratorial Direcionada'
+      },
+      4: {
+        primary: 'var(--mod4-primary)',
+        secondary: 'var(--mod4-secondary)',
+        glow: 'var(--mod4-glow)',
+        name: 'Módulo 4: Tratamento e Acompanhamento na Prática Clínica'
+      },
+      5: {
+        primary: 'var(--mod5-primary)',
+        secondary: 'var(--mod5-secondary)',
+        glow: 'var(--mod5-glow)',
+        name: 'Módulo 5: Anemias Especializadas e Encaminhamento ao Hematologista'
+      }
+    };
+
+    // Alternar Tema Claro / Escuro
+    function toggleTheme() {
+      const htmlEl = document.documentElement;
+      const currentTheme = htmlEl.getAttribute('data-theme') || 'dark';
+      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      htmlEl.setAttribute('data-theme', nextTheme);
+      themeBtn.innerHTML = nextTheme === 'dark' ? '☀️ Modo Claro' : '🌙 Modo Escuro';
+      localStorage.setItem('anemias_theme', nextTheme);
+    }
+
+    // Carregar preferência de tema salva
+    (function initTheme() {
+      const saved = localStorage.getItem('anemias_theme');
+      if (saved === 'light' || saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', saved);
+        themeBtn.innerHTML = saved === 'dark' ? '☀️ Modo Claro' : '🌙 Modo Escuro';
+      }
+    })();
+
+    // Lightbox para Ampliar Imagens Clínicas
+    function openLightbox(src, caption) {
+      lightboxImg.src = src;
+      lightboxCaption.textContent = caption || '';
+      lightbox.classList.add('open');
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightboxImg.src = '';
+    }
+
+    // Construir o sumário lateral
+    function buildDrawer() {
+      drawerList.innerHTML = '';
+      slides.forEach((slide, idx) => {
+        const item = document.createElement('div');
+        item.className = 'drawer-item' + (idx === currentIndex ? ' active' : '');
+        const title = slide.getAttribute('data-title');
+        item.innerHTML = `<span style="font-family:'JetBrains Mono'; font-size:0.75rem; opacity:0.6;">${String(idx + 1).padStart(2, '0')}</span> <span>${title}</span>`;
+        item.onclick = () => {
+          goToSlide(idx);
+          toggleDrawer(false);
+        };
+        drawerList.appendChild(item);
+      });
+    }
+
+    function updateUI() {
+      slides.forEach((s, i) => {
+        s.classList.toggle('active', i === currentIndex);
+      });
+
+      const activeSlide = slides[currentIndex];
+      const mod = parseInt(activeSlide.getAttribute('data-module'), 10);
+      const theme = moduleThemes[mod];
+
+      document.documentElement.style.setProperty('--active-primary', theme.primary);
+      document.documentElement.style.setProperty('--active-secondary', theme.secondary);
+      document.documentElement.style.setProperty('--active-glow', theme.glow);
+
+      modPills.forEach((pill, idx) => {
+        pill.classList.toggle('active', idx + 1 === mod);
+      });
+
+      const pct = ((currentIndex + 1) / slides.length) * 100;
+      progressFill.style.width = `${pct}%`;
+      slideCounter.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+      footerModuleLabel.textContent = theme.name;
+
+      const drawerItems = Array.from(drawerList.children);
+      drawerItems.forEach((item, i) => {
+        item.classList.toggle('active', i === currentIndex);
+      });
+    }
+
+    function goToSlide(index) {
+      if (index < 0 || index >= slides.length) return;
+      currentIndex = index;
+      updateUI();
+    }
+
+    function nextSlide() {
+      if (currentIndex < slides.length - 1) {
+        currentIndex++;
+        updateUI();
+      }
+    }
+
+    function prevSlide() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateUI();
+      }
+    }
+
+    function jumpToModule(modNumber) {
+      const targetIndex = slides.findIndex(s => parseInt(s.getAttribute('data-module'), 10) === modNumber);
+      if (targetIndex !== -1) {
+        goToSlide(targetIndex);
+      }
+    }
+
+    function toggleDrawer(force) {
+      const isOpen = typeof force === 'boolean' ? force : !drawer.classList.contains('open');
+      drawer.classList.toggle('open', isOpen);
+      drawerBackdrop.classList.toggle('open', isOpen);
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // Atalhos de Teclado
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeLightbox();
+        toggleDrawer(false);
+        return;
+      }
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullScreen();
+      } else if (e.key === 't' || e.key === 'T') {
+        toggleTheme();
+      }
+    });
+
+    buildDrawer();
+    updateUI();
+  </script>
+</body>
+</html>
